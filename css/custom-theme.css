@@ -1,0 +1,51 @@
+﻿@import url('https://googleapis.com');
+.reveal {
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff;
+    color: #2b2d42;
+}
+.reveal h1, .reveal h2, .reveal h3 {
+    color: #1d3557;
+    font-weight: 700;
+    text-transform: none;
+    margin-bottom: 20px;
+}
+.reveal section.divider-slide {
+    background-color: #1d3557 !important;
+    color: #f1faee !important;
+}
+.reveal section.divider-slide h2 {
+    color: #f1faee !important;
+}
+.reveal .slides section {
+    overflow: hidden !important;
+    box-sizing: border-box;
+}
+.reveal pre {
+    background: #2b2d42;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 0.42em;
+    max-height: 420px;
+}
+.reveal table {
+    font-size: 0.40em;
+    margin: 0 auto;
+    border-collapse: collapse;
+    width: 100%;
+}
+.reveal th, .reveal td {
+    border: 1px solid #e6e6e6;
+    padding: 3px 5px;
+    text-align: center;
+}
+.reveal th {
+    background-color: #f1faee;
+    color: #1d3557;
+}
+.reveal img {
+    max-height: 300px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
