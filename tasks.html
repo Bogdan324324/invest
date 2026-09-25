@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Lives Matter</title>
+    
+    <!-- ИСПРАВЛЕНО: Подключены рабочие CDN-скрипты Brython для работы Python в браузере -->
+    <script type="text/javascript" src="https://cloudflare.com"></script>
+    <script type="text/javascript" src="https://cloudflare.com"></script>
+    
+    <style>
+        /* Общие стили для эффектного тёмного фона */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #272822;
+            color: #f92671;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 20px;
+            gap: 15px;
+        }
+
+        /* Общие рамки блоков согласно схеме (опционально, для структуры) */
+        .header, .nav, .left-sidebar, .content, .right-sidebar, .footer {
+            border: 2px solid #ffcc00;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #1e1e1e;
+        }
+
+        /* ШАПКА: Логотип и Реклама (верхний блок) */
+        .header {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffcc00;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-right: 2px solid #ffcc00;
+            padding-right: 10px;
+        }
+
+        .title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            animation: fadeIn 1.5s ease-in-out;
+            color: #fff;
+        }
+
+        /* НАВИГАЦИЯ: Горизонтальное меню */
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            color: #ffcc00;
+            font-weight: bold;
+        }
+        
+        .nav span {
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .nav span:hover {
+            color: #fff;
+        }
+
+        /* ОСНОВНОЙ КОНТЕЙНЕР: Сетка из 3-х колонок */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 2.5fr 1fr;
+            gap: 15px;
+            flex-grow: 1;
+        }
+
+        /* Боковые панели */
+        .left-sidebar h2, .right-sidebar h2 {
+            font-size: 1.2rem;
+            color: #ffcc00;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ffcc00;
+            padding-bottom: 5px;
+        }
+
+        /* Центральный блок контента */
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Сетка для фото внутри контента */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+
+        /* Контейнер для фото с эффектом при наведении */
+        .photo-container {
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: #cbe938;
+            aspect-ratio: 4 / 3;
+        }
+
+        .photo-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 204, 0, 0.3);
+        }
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .photo-container:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Стили для вывода Python-скрипта в футере */
+        #python-output {
+            font-size: 1.1rem;
+            color: #ffcc00;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Простая анимация появления */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Адаптивность под мобильные устройства */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .logo {
+                border-right: none;
+                border-bottom: 2px solid #ffcc00;
+                padding-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body onload="brython()">
+
+    <!-- ВЕРХНИЙ БЛОК (LOGO + REKLAMA) -->
+    <header class="header">
+        <div class="logo">BLM</div>
+        <h1 class="title">«Жизни чёрных имеют значение»</h1>
+    </header>
+
+    <!-- ГОРИЗОНТАЛЬНОЕ МЕНЮ -->
+    <nav class="nav">
+        <span>Главная</span> | <span>История</span> | <span>Активисты</span> | <span>Ресурсы</span>
+    </nav>
+
+    <!-- ТРЕХКОЛОНОЧНЫЙ БЛОК -->
+    <div class="main-container">
+        
+        <!-- ЛЕВЫЙ БЛОК -->
+        <aside class="left-sidebar">
+            <h2>История движения</h2>
+            <h2>Главные цели и манифест</h2>
+            <h2>Выдающиеся активисты</h2>
+        </aside>
+
+        <!-- ЦЕНТРАЛЬНЫЙ КОНТЕНТ -->
+        <main class="content">
+            <!-- Галерея из 4 фото -->
+            <div class="gallery">
+                <div class="photo-container">
+                    <img src="images.jpg" alt="Фото 1">
+                </div>
+                <div class="photo-container">
+                    <img src="images (1).jpg" alt="Фото 2">
+                </div>
+                <div class="photo-container">
+                    <img src="images (2).jpg" alt="Фото 3">
+                </div>
+                <div class="photo-container">
+                    <img src="images (3).jpg" alt="Фото 4">
+                </div>
+            </div>
+        </main>
+
+        <!-- ПРАВЫЙ БЛОК -->
+        <aside class="right-sidebar">
+            <b><h2>Важные исторические события</h2></b>
+            <section>
+                <h4>Даты и тому подобные события</h4>
+            <div id = "history">
+            </div>
+            </section>
+            <h2>Полезные ресурсы и книги</h2>
+            <section>
+                <h4>Множество буклетов
+            </h4>
+            <div id = "book">
+            </div>
+            </section>
+            <h2>Как поддержать и фонды</h2>
+            <section>
+               <h4>Донат
+            </h4>
+            <div id = "money">
+            </div>
+            </section>
+        </aside>
+
+    </div>
+
+    <!-- ФУТЕР (НИЗ) -->
+    <footer class="footer">
+        <!-- Блок, куда Python запишет текст -->
+        <h2>Как поддержать и фонды</h2>
+        <div id="python-output"></div>
+    </footer>
+
+    <!-- Скрипт Brython для выполнения Python в браузере -->
+    <script type="text/python">
+        from browser import document
+        # Записываем текст в специальный красивый блок
+        document["python-output"] <= "Hello !"
+    </script>
+
+    img.cat TAB → <img src="panther.jpg" alt="" class="cat">
+    p.cat TAB  → <p class="cat"></p>
+    .cat TAB → <div class="cat"></div>
+
+</body>
+</html>

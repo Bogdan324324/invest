@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Расписание звонков</title>
+    <style>
+        ol {
+            list-style-type: none;
+            padding-left: 20px;
+            counter-reset: lesson-counter; 
+        }
+
+        
+        ol li:not(.break) {
+            counter-increment: lesson-counter;
+            margin-bottom: 5px;
+        }
+
+        ol li:not(.break)::before {
+            content: counter(lesson-counter) ". ";
+            font-weight: bold;
+        }
+
+        .break {
+            font-weight: bold;
+            margin: 15px 0;
+            color: rgb(0, 0, 0);
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Расписание звонков</h2>
+    
+    <ol>
+        <li>08:20 - 09:40</li>
+        <li>09:50 - 11:10</li>
+        
+        <li class="break">Перемена 40 минут</li>
+        
+        <li>11:50 - 13:10</li>
+        <li>13:20 - 14:40</li>
+        
+        <li class="break">Перемена 20 минут</li>
+        
+        <li>15:00 - 16:20</li>
+        <li>16:30 - 17:50</li>
+        <li>18:00 - 19:20</li>
+        <li>19:30 - 20:50</li>
+    </ol>
+
+<section>
+    <div class="photo">
+        <img src="img/images.jpg" alt="Фото 1">
+</section>
+
+</body>
+</html>
