@@ -1,37 +1,117 @@
 ﻿<!doctype html>
-<html lang="ru">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Финансовая математика</title>
-    <link rel="stylesheet" href="css/custom-theme.css" id="theme">
-</head>
-<body>
-    <div class="reveal">
-        <div class="slides">
-            <!-- Динамическое подключение слайдов из папки -->
-            <section data-markdown="slides/slide01_title.md" data-menu-title="Титульный слайд"></section>
-            <section data-markdown="slides/slide02_div_intro.md" data-menu-title="Разделитель: Введение"></section>
-            <section data-markdown="slides/slide03_definition.md" data-menu-title="Определение фин. математики"></section>
-            <section data-markdown="slides/slide04_div_simple.md" data-menu-title="Разделитель: Простые проценты"></section>
-            <section data-markdown="slides/slide05_simple_formulas.md" data-menu-title="Формулы простых процентов"></section>
-            <section data-markdown="slides/slide06_practices.md" data-menu-title="3 практики начисления"></section>
-            <section data-markdown="slides/slide07_simple_v1_v3.md" data-menu-title="Простые проценты: Варианны 1-3"></section>
-            <section data-markdown="slides/slide08_simple_v4_v6.md" data-menu-title="Простые проценты: Варианты 4-6"></section>
-            <section data-markdown="slides/slide09_div_compound.md" data-menu-title="Разделитель: Сложные проценты"></section>
-            <section data-markdown="slides/slide10_compound_formulas.md" data-menu-title="Формулы сложных процентов"></section>
-            <section data-markdown="slides/slide11_compound_v7_v9.md" data-menu-title="Сложные проценты: Варианты 7-9"></section>
-            <section data-markdown="slides/slide12_compound_v10_v12.md" data-menu-title="Сложные проценты: Варианты 10-12"></section>
-            <section data-markdown="slides/slide13_div_code.md" data-menu-title="Разделитель: Программы"></section>
-            <section data-markdown="slides/slide14_js_table.md" data-menu-title="Программа: Порядковые дни"></section>
-            <section data-markdown="slides/slide15_js_calc.md" data-menu-title="Программа: Кредитный калькулятор"></section>
-            <section data-markdown="slides/slide16_js_run.md" data-menu-title="Исходный код: Запуск кода"></section>
-            <section data-markdown="slides/slide17_div_humor.md" data-menu-title="Разделитель: Юмор"></section>
-            <section data-markdown="slides/slide18_meme1.md" data-menu-title="Юмор: Наращение кота"></section>
-            <section data-markdown="slides/slide19_meme2.md" data-menu-title="Юмор: Суровая практика банка"></section>
-            <section data-markdown="slides/slide20_meme3.md" data-menu-title="Юмор: Депозит из прошлого"></section>
-            <section data-markdown="slides/slide21_final.md" data-menu-title="Заключительный слайд"></section>
-        </div>
-    </div>
-</body>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Инвестиции</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/solarized.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section> 
+					<h1>Инвестиции</h1> 
+				</section>
+				<section> 
+					<h2>Определения</h2> 
+				</section>
+				<section 
+					data-markdown="markdown/invest.md">
+				</section>
+				<section 
+					data-markdown="markdown/trading.md">
+				</section>
+				<section 
+					data-markdown="markdown/market.md">
+				</section>
+				<section 
+					data-markdown="markdown/exchange.md">
+				</section>
+				<section 
+					data-markdown="markdown/security_paper.md">
+				</section>
+				<section 
+					data-markdown="markdown/investment_portfolio.md">
+				</section>
+				<section 
+					data-markdown="markdown/bull.md">
+				</section>
+				<section 
+					data-markdown="markdown/bear.md">
+				</section>
+				<section 
+					data-markdown="markdown/ball.md">
+				</section>
+				<section 
+					data-markdown="markdown/flat.md">
+				</section>
+				<section 
+					data-markdown="markdown/bull_and_bear.md">
+				</section>
+				<section 
+					data-markdown="markdown/spread.md">
+				</section>
+				<section 
+					data-markdown="markdown/diversification.md">
+				</section>
+				<section 
+					data-markdown="markdown/line.md">
+				</section>
+				<section 
+					data-markdown="markdown/schedule.md">
+				</section>
+				<section> 
+					<h2>Доходность портфель</h2> 
+				</section>
+				<!-- Разделенные слайды: сначала Markdown, затем iframe -->
+				<section 
+					data-markdown="markdown/rate_of_return.md">
+				</section>
+				<section data-fullscreen data-menu-title="Расчет доходность"> 
+					<iframe src="html/rate_of_return.html"
+					frameborder="0" class="stretch"></iframe>
+				</section>
+				<section> 
+					<h2>График инвестиции</h2> 
+				</section>
+				<section 
+					data-markdown="markdown/line.md">
+				</section>
+				<section data-fullscreen data-menu-title="Линеный график"> 
+					<iframe src="html/line.html"
+					frameborder="0" class="stretch"></iframe>
+				</section>
+				<section 
+					data-markdown="markdown/candlestick.md">
+				</section>
+				<section data-fullscreen data-menu-title="Линеный график"> 
+					<iframe src="html/line.html"
+					frameborder="0" class="stretch"></iframe>
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com
+			// - https://revealjs.com
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
 </html>
