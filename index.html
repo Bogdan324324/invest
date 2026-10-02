@@ -22,79 +22,68 @@
 				<section> 
 					<h2>Определения</h2> 
 				</section>
-				<section 
-					data-markdown="markdown/invest.md">
-				</section>
-				<section 
-					data-markdown="markdown/trading.md">
-				</section>
-				<section 
-					data-markdown="markdown/market.md">
-				</section>
-				<section 
-					data-markdown="markdown/exchange.md">
-				</section>
-				<section 
-					data-markdown="markdown/security_paper.md">
-				</section>
-				<section 
-					data-markdown="markdown/investment_portfolio.md">
-				</section>
-				<section 
-					data-markdown="markdown/bull.md">
-				</section>
-				<section 
-					data-markdown="markdown/bear.md">
-				</section>
-				<section 
-					data-markdown="markdown/ball.md">
-				</section>
-				<section 
-					data-markdown="markdown/flat.md">
-				</section>
-				<section 
-					data-markdown="markdown/bull_and_bear.md">
-				</section>
-				<section 
-					data-markdown="markdown/spread.md">
-				</section>
-				<section 
-					data-markdown="markdown/diversification.md">
-				</section>
-				<section 
-					data-markdown="markdown/line.md">
-				</section>
-				<section 
-					data-markdown="markdown/schedule.md">
-				</section>
+				<section data-markdown="Economy/invest.md"></section>
+				<section data-markdown="Economy/treding.md"></section>
+				<section data-markdown="Economy/market.md"></section>
+				<section data-markdown="Economy/exchange.md"></section>
+				<section data-markdown="Economy/security_paper.md"></section>
+				<section data-markdown="Economy/investment_portfolio.md"></section>
+				<section data-markdown="Economy/bull.md"></section>
+				<section data-markdown="Economy/bear.md"></section>
+				<section data-markdown="Economy/flat.md"></section>
+				<section data-markdown="Economy/bull_and_bear.md"></section>
+				<section data-markdown="Economy/spread.md"></section>
+				<section data-markdown="Economy/diversification.md"></section>
+				<section data-markdown="Economy/line.md"></section>				
 				<section> 
 					<h2>Доходность портфель</h2> 
 				</section>
-				<!-- Разделенные слайды: сначала Markdown, затем iframe -->
-				<section 
-					data-markdown="markdown/rate_of_return.md">
-				</section>
+				<section data-markdown="Economy/rate_of_return.md"></section>
+				
+				<!-- Изолируем iframe от Markdown -->
 				<section data-fullscreen data-menu-title="Расчет доходность"> 
-					<iframe src="html/rate_of_return.html"
-					frameborder="0" class="stretch"></iframe>
+					<iframe src="html/rate_of_return.html" frameborder="0" class="stretch"></iframe>
 				</section>
+				
 				<section> 
 					<h2>График инвестиции</h2> 
 				</section>
-				<section 
-					data-markdown="markdown/line.md">
-				</section>
+				<section data-markdown="Economy/line.md"></section>
+				
+				<!-- Изолируем iframe от Markdown -->
 				<section data-fullscreen data-menu-title="Линеный график"> 
-					<iframe src="html/line.html"
-					frameborder="0" class="stretch"></iframe>
+					<iframe src="html/line.html" frameborder="0" class="stretch"></iframe>
 				</section>
-				<section 
-					data-markdown="markdown/candlestick.md">
-				</section>
+				
+				<section data-markdown="Economy/candlestick.md"></section>
+				
+				<!-- Изолируем iframe от Markdown -->
 				<section data-fullscreen data-menu-title="Линеный график"> 
-					<iframe src="html/line.html"
-					frameborder="0" class="stretch"></iframe>
+					<iframe src="html/line.html" frameborder="0" class="stretch"></iframe>
 				</section>
+                <section>
+                    <div style="position: relative; width: 100%; height: 100%;">
+                        <!-- Картинка растягивается на весь слайд -->
+                        <img src="img/funny_cat.jpg" alt="Кот-капиталист" class="r-stretch" style="width: 100%; height: auto; display: block;">
+                        
+                        <!-- Текст поверх картинки -->
+                        <h2 style="position: absolute; top: 10%; left: 50%; transform: translateX(-50%); width: 100%; color: #fff; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); margin: 0;">
+                            Капиталюги
+                        </h2>
+                    </div>
+                </section>
+                
+                <!-- СЛАЙД С СОБАКОЙ -->
+                <section>
+                    <div style="position: relative; width: 100%; height: 50%;">
+                        <img src="img/funny_dog.jpg" alt="Смешная собака" class="r-stretch" style="width: 100%; height: auto; display: block;">
+                        
+                        <h2 style="position: absolute; top: 10%; left: 50%; transform: translateX(-50%); width: 100%; color: #fff; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); margin: 0;">
+                            Беееееее
+                        </h2>
+                    </div>
+                </section>
+                <section>Спасибо за внимание!</section>
 			</div>
 		</div>
 
@@ -103,13 +92,13 @@
 		<script src="plugin/markdown/markdown.js"></script>
 		<script src="plugin/highlight/highlight.js"></script>
 		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com
-			// - https://revealjs.com
+			// Безопасная инициализация
 			Reveal.initialize({
 				hash: true,
-
-				// Learn about plugins: https://revealjs.com
+				// Явно указываем плагину Markdown обрабатывать только элементы с атрибутом data-markdown
+				markdown: {
+					smartypants: true
+				},
 				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
 			});
 		</script>
