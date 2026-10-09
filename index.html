@@ -9,18 +9,45 @@
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
 		<link rel="stylesheet" href="dist/theme/solarized.css" id="theme">
-
+		
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+
+		<!-- Задания по стилю презентации номер (1) -->
+		<style>
+			.reveal-viewport {
+				background: #01ebb87e !important;
+			}
+			
+			/* 2. Стили для заголовков h2 */
+			.section-header {
+				background-color: #1e3a8a !important;
+				color: #ffffff !important;
+				padding: 10px 20px;
+				border-radius: 8px;
+			}
+
+			/* 3. Стили для заголовка h1 (наоборот по цветам) */
+			.title-header {
+				background-color: #ffffff !important;
+				color: #1e3a8a !important;
+				padding: 15px 30px;
+				border: 3px solid #1e3a8a;
+				border-radius: 8px;
+				display: inline-block;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="reveal">
 			<div class="slides">
 				<section> 
-					<h1>Инвестиции</h1> 
+					<!-- Добавлен класс title-header -->
+					<h1 class="title-header">Инвестиции</h1> 
 				</section>
 				<section> 
-					<h2>Определения</h2> 
+					<!-- Добавлен класс section-header -->
+					<h2 class="section-header">Определения</h2> 
 				</section>
 				<section data-markdown="Economy/invest.md"></section>
 				<section data-markdown="Economy/treding.md"></section>
@@ -36,7 +63,8 @@
 				<section data-markdown="Economy/diversification.md"></section>
 				<section data-markdown="Economy/line.md"></section>				
 				<section> 
-					<h2>Доходность портфель</h2> 
+					<!-- Добавлен класс section-header -->
+					<h2 class="section-header">Доходность портфель</h2> 
 				</section>
 				<section data-markdown="Economy/rate_of_return.md"></section>
 				
@@ -46,7 +74,8 @@
 				</section>
 				
 				<section> 
-					<h2>График инвестиции</h2> 
+					<!-- Добавлен класс section-header -->
+					<h2 class="section-header">График инвестиции</h2> 
 				</section>
 				<section data-markdown="Economy/line.md"></section>
 				
@@ -67,23 +96,29 @@
                         <img src="img/funny_cat.jpg" alt="Кот-капиталист" class="r-stretch" style="width: 100%; height: auto; display: block;">
                         
                         <!-- Текст поверх картинки -->
-                        <h2 style="position: absolute; top: 10%; left: 50%; transform: translateX(-50%); width: 100%; color: #fff; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); margin: 0;">
+                        <!-- Добавлен класс section-header -->
+                        <h2 class="section-header" style="position: absolute; top: 10%; left: 50%; transform: translateX(-50%); width: auto; margin: 0; box-shadow: 2px 2px 8px rgba(0,0,0,0.5);">
                             Капиталюги
                         </h2>
                     </div>
                 </section>
                 
-                <!-- СЛАЙД С СОБАКОЙ -->
+                <!-- СЛАЙД С СОБАКОЙ (Исправлена высота контейнера на 100%) -->
                 <section>
-                    <div style="position: relative; width: 100%; height: 50%;">
+                    <div style="position: relative; width: 100%; height: 100%;">
                         <img src="img/funny_dog.jpg" alt="Смешная собака" class="r-stretch" style="width: 100%; height: auto; display: block;">
                         
-                        <h2 style="position: absolute; top: 10%; left: 50%; transform: translateX(-50%); width: 100%; color: #fff; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); margin: 0;">
+                        <!-- Добавлен класс section-header -->
+                        <h2 class="section-header" style="position: absolute; top: 10%; left: 50%; transform: translateX(-50%); width: auto; margin: 0; box-shadow: 2px 2px 8px rgba(0,0,0,0.5);">
                             Беееееее
                         </h2>
                     </div>
                 </section>
-                <section>Спасибо за внимание!</section>
+                
+                <!-- ФИНАЛЬНЫЙ СЛАЙД (Красиво оформлен заголовок) -->
+				<section>
+					<h1 class="title-header">Спасибо за внимание!</h1>
+				</section>
 			</div>
 		</div>
 
@@ -92,10 +127,9 @@
 		<script src="plugin/markdown/markdown.js"></script>
 		<script src="plugin/highlight/highlight.js"></script>
 		<script>
-			// Безопасная инициализация
+
 			Reveal.initialize({
 				hash: true,
-				// Явно указываем плагину Markdown обрабатывать только элементы с атрибутом data-markdown
 				markdown: {
 					smartypants: true
 				},

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Абстрактный триптих на CSS</title>
+  <style>
+    /* Базовые стили для фона страницы */
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #fcece0; /* Светло-кремовый фон */
+      font-family: sans-serif;
+    }
+
+    /* Контейнер для трех картин */
+    .triptych {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    /* Общие стили для каждого холста */
+    .canvas {
+      width: 300px;
+      height: 400px;
+      background-color: #ffffff;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Вспомогательный класс для центрирования элементов и включения смешивания цветов */
+    .shape {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      mix-blend-mode: multiply; /* Эффект прозрачности при пересечении */
+    }
+
+    /* ================= КАРТИНА 1: КРУГ ================= */
+    .c-blue-circle {
+      top: 60px;
+      width: 100px;
+      height: 100px;
+      background-color: #a7c7dc;
+      border-radius: 50%;
+    }
+
+    .c-outline-circle {
+      top: 100px;
+      width: 130px;
+      height: 130px;
+      border: 2px solid #4a4a4a;
+      border-radius: 50%;
+    }
+
+    .c-brown-circle {
+      top: 215px;
+      width: 70px;
+      height: 70px;
+      background-color: #6e473b;
+      border-radius: 50%;
+    }
+
+    .c-semi-circle {
+      top: 295px;
+      width: 50px;
+      height: 25px;
+      background-color: #e5e5f0;
+      border-radius: 0 0 50px 50px; /* Полукруг внизу */
+    }
+
+    /* ================= КАРТИНА 2: КВАДРАТ ================= */
+    .s-blue-square {
+      top: 70px;
+      left: 30%; /* Смещен влево */
+      width: 90px;
+      height: 90px;
+      background-color: #a7c7dc;
+    }
+
+    .s-outline-square {
+      top: 110px;
+      width: 130px;
+      height: 130px;
+      border: 2px solid #4a4a4a;
+    }
+
+    .s-light-rect {
+      top: 105px;
+      left: 70%; /* Смещен вправо */
+      width: 60px;
+      height: 20px;
+      background-color: #e5e5f0;
+    }
+
+    .s-brown-square {
+      top: 230px;
+      width: 80px;
+      height: 80px;
+      background-color: #6e473b;
+    }
+
+    /* ================= КАРТИНА 3: ТРЕУГОЛЬНИК ================= */
+    /* Треугольники делаются с помощью border (границ) */
+    .t-blue-triangle {
+      top: 50px;
+      width: 0;
+      height: 0;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      border-bottom: 85px solid #a7c7dc;
+    }
+
+    .t-outline-triangle {
+      top: 100px;
+      width: 0;
+      height: 0;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    /* Внутренняя часть для создания контура */
+    .t-outline-triangle::before, .t-outline-triangle::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 70px solid transparent;
+      border-right: 70px solid transparent;
+      left: -70px;
+    }
+    .t-outline-triangle::before {
+      border-bottom: 120px solid #4a4a4a;
+      top: 0;
+    }
+    .t-outline-triangle::after {
+      border-bottom: 116px solid #ffffff; /* Перекрывает внутренность белым */
+      top: 2px; 
+    }
+
+    .t-brown-triangle {
+      top: 215px;
+      width: 0;
+      height: 0;
+      border-left: 35px solid transparent;
+      border-right: 35px solid transparent;
+      border-bottom: 60px solid #6e473b;
+      z-index: 2;
+    }
+
+    .t-light-trapezoid {
+      top: 295px;
+      width: 35px;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 20px solid #e5e5f0; /* Трапеция с помощью скошенных углов */
+    }
+  </style>
+</head>
+<body>
+
+  <div class="triptych">
+    
+    <!-- Первая картина: Круг -->
+    <div class="canvas">
+      <div class="shape c-blue-circle"></div>
+      <div class="shape c-outline-circle"></div>
+      <div class="shape c-brown-circle"></div>
+      <div class="shape c-semi-circle"></div>
+    </div>
+
+    <!-- Вторая картина: Квадрат -->
+    <div class="canvas">
+      <div class="shape s-blue-square"></div>
+      <div class="shape s-light-rect"></div>
+      <div class="shape s-outline-square"></div>
+      <div class="shape s-brown-square"></div>
+    </div>
+
+    <!-- Третья картина: Треугольник -->
+    <div class="canvas">
+      <div class="shape t-blue-triangle"></div>
+      <!-- Контурный треугольник выносим отдельно без mix-blend, чтобы белый цвет внутри не просвечивал -->
+      <div class="t-outline-triangle"></div>
+      <div class="shape t-brown-triangle"></div>
+      <div class="shape t-light-trapezoid"></div>
+    </div>
+
+  </div>
+
+</body>
+</html>

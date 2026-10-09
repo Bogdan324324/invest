@@ -5,40 +5,137 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Агния Барто — Мячик</title>
     <style>
-        /* Стилизация заголовка */
+        /* Центрирования карточки на странице */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .poem-card {
+            background: #ffffff;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        /* Главный заголовок h1 */
         .poem-title {
             color: #2c3e50;
-            font-size: 2.2rem;
+            font-size: 2.6rem;
             margin-top: 0;
-            margin-bottom: 25px;
-            letter-spacing: 1px;
+            margin-bottom: 35px;
+            letter-spacing: 1.5px;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: 800;
             position: relative;
         }
 
-        /* Стилизация текста стихотворения */
+        /* Подчеркивание под заголовком h1 */
+        .poem-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background-color: #e74c3c;
+            border-radius: 2px;
+        }
+
+        /* Заголовок секции h2 */
+        .section-heading {
+            font-size: 1.4rem;
+            color: #7f8c8d;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+
+        /* С границей, тенью, отступом и скруглением */
+        .section-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease; 
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+            border-color: #3498db;
+        }
+
         .poem-text {
             font-size: 1.3rem;
             line-height: 1.8;
             color: #34495e;
-            margin-bottom: 30px;
+            margin: 0;
             font-weight: 500;
+        }
+
+        .line {
+            display: block;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .italic {
+            font-style: italic;
+        }
+
+        .dialogue::before {
+            content: "- ";
+        }
+
+        .strikethrough {
+            text-decoration: line-through;
+            color: #95a5a6;
+        }
+
+        /* Стили для автора */
+        .author-box {
+            margin-top: 20px;
+            border-top: 1px dashed #bdc3c7;
+            padding-top: 15px;
+            text-align: right;
         }
     </style>
 </head>
 <body>
-
     <div class="poem-card">
-        <h2 class="poem-title">Мячик</h2>
-        
-        <p class="poem-text">
-            <b>Наша Таня громко плачет:</b><br>
-            <i>Уронила в речку мячик.</i><br>
-            -Тише, Танечка, не плачь:<br>
-            <strike>Не утонет в речке мяч.</strike><br>
-        </p>
-        
-        <p class="poem-author"><b><i>Автор: А. Л. Барто</i></b></p>
-    </div>
+        <!-- Секция с заголовком H1 (без класса section-card) -->
+        <section>
+            <h1 class="poem-title">Мячик</h1>
+        </section>
 
+        <!-- Основная секция с текстом (добавлен класс section-card) -->
+        <section class="section-card">
+            <h2 class="section-heading">Стихотворение</h2>
+            <p class="poem-text">
+                <span class="line bold">Наша Таня громко плачет:</span>
+                <span class="line italic">Уронила в речку мячик.</span>
+                <span class="line dialogue">Тише, Танечка, не плачь:</span>
+                <span class="line strikethrough">Не утонет в речке мяч.</span>
+            </p>
+            <div class="author-box">
+                <span class="line bold italic">Автор: А. Л. Барто</span>
+            </div>
+        </section>
+    </div>
 </body>
 </html>
