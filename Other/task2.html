@@ -1,29 +1,55 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
+<!DOCTYPE html> 
+<html lang="ru"> 
+<head> 
+    <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Агния Барто — Мячик</title>
-    <style>
-        /* Центрирования карточки на странице */
+    <title>Стихотворение, Расписание и Предметы</title> 
+    <!-- Подключение Bootstrap 5 для работы сетки, таблиц и форм -->
+    <link href="https://jsdelivr.net" rel="stylesheet">
+    <style> 
+        /* Центрирование контента на странице */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f8f9fa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
-            margin: 0;
+            display: flex;
+            align-items: center;
+            padding: 40px 0;
         }
 
-        .poem-card {
+        /* --- Стили для карточек --- */
+        .poem-card, .timetable-card {
             background: #ffffff;
             padding: 40px;
-            max-width: 500px;
             width: 100%;
+            height: 100%; /* Чтобы карточки были одинаковой высоты */
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
-        /* Главный заголовок h1 */
+        /* Блоки под расписанием звонков */
+        .table-box, .input-box {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px dashed #e2e8f0;
+        }
+
+        /* Дополнительная стилизация таблицы в цвет темы */
+        .table th {
+            background-color: #f8f9fa;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Изменение фокуса для поля ввода */
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        }
+
+        /* --- Стили из первого кода (Стихотворение) --- */
         .poem-title {
             color: #2c3e50;
             font-size: 2.6rem;
@@ -35,8 +61,6 @@
             font-weight: 800;
             position: relative;
         }
-
-        /* Подчеркивание под заголовком h1 */
         .poem-title::after {
             content: '';
             position: absolute;
@@ -48,8 +72,6 @@
             background-color: #e74c3c;
             border-radius: 2px;
         }
-
-        /* Заголовок секции h2 */
         .section-heading {
             font-size: 1.4rem;
             color: #7f8c8d;
@@ -60,8 +82,6 @@
             border-left: 4px solid #3498db;
             padding-left: 10px;
         }
-
-        /* С границей, тенью, отступом и скруглением */
         .section-card {
             border: 1px solid #e2e8f0;
             border-radius: 15px;
@@ -69,15 +89,13 @@
             margin-bottom: 25px;
             background-color: #ffffff;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease; 
+            transition: all 0.3s ease;
         }
-
         .section-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
             border-color: #3498db;
         }
-
         .poem-text {
             font-size: 1.3rem;
             line-height: 1.8;
@@ -85,57 +103,133 @@
             margin: 0;
             font-weight: 500;
         }
-
-        .line {
-            display: block;
-        }
-
-        .bold {
-            font-weight: bold;
-        }
-
-        .italic {
-            font-style: italic;
-        }
-
-        .dialogue::before {
-            content: "- ";
-        }
-
-        .strikethrough {
-            text-decoration: line-through;
-            color: #95a5a6;
-        }
-
-        /* Стили для автора */
+        .line { display: block; }
+        .bold { font-weight: bold; }
+        .italic { font-style: italic; }
+        .dialogue::before { content: "- "; }
+        .strikethrough { text-decoration: line-through; color: #95a5a6; }
         .author-box {
             margin-top: 20px;
             border-top: 1px dashed #bdc3c7;
             padding-top: 15px;
             text-align: right;
         }
-    </style>
-</head>
-<body>
-    <div class="poem-card">
-        <!-- Секция с заголовком H1 (без класса section-card) -->
-        <section>
-            <h1 class="poem-title">Мячик</h1>
-        </section>
 
-        <!-- Основная секция с текстом (добавлен класс section-card) -->
-        <section class="section-card">
-            <h2 class="section-heading">Стихотворение</h2>
-            <p class="poem-text">
-                <span class="line bold">Наша Таня громко плачет:</span>
-                <span class="line italic">Уронила в речку мячик.</span>
-                <span class="line dialogue">Тише, Танечка, не плачь:</span>
-                <span class="line strikethrough">Не утонет в речке мяч.</span>
-            </p>
-            <div class="author-box">
-                <span class="line bold italic">Автор: А. Л. Барто</span>
+        /* --- Стили из второго кода (Расписание звонков) --- */
+        ol { 
+            list-style-type: none; 
+            padding-left: 20px; 
+            counter-reset: lesson-counter; 
+        }
+        ol li {
+            transition: all 0.3s ease; 
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+        ol li:hover {
+            background-color: #f0f0f0; 
+            transform: translateX(5px); 
+            cursor: pointer;
+        }
+        ol li:not(.break) { 
+            counter-increment: lesson-counter; 
+            margin-bottom: 5px; 
+        }
+        ol li:not(.break)::before { 
+            content: counter(lesson-counter) ". "; 
+            font-weight: bold; 
+        }
+        .break { 
+            font-weight: bold; 
+            margin: 15px 0; 
+            color: rgb(0, 0, 0); 
+        }
+    </style> 
+</head> 
+<body> 
+
+<div class="container">
+    <div class="row g-4 justify-content-center">
+        
+        <!-- Первая колонка col-md-6: Стихотворение -->
+        <div class="col-md-6">
+            <div class="poem-card">
+                <section>
+                    <h1 class="poem-title">Мячик</h1>
+                </section>
+                <section class="section-card">
+                    <h2 class="section-heading">Стихотворение</h2>
+                    <p class="poem-text">
+                        <span class="line bold">Наша Таня громко плачет:</span>
+                        <span class="line italic">Уронила в речку мячик.</span>
+                        <span class="line dialogue">Тише, Танечка, не плачь:</span>
+                        <span class="line strikethrough">Не утонет в речке мяч.</span>
+                    </p>
+                    <div class="author-box">
+                        <span class="line bold italic">Автор: А. Л. Барто</span>
+                    </div>
+                </section>
             </div>
-        </section>
+        </div>
+
+        <!-- Вторая колонка col-md-6: Расписание, Таблица и Поле ввода -->
+        <div class="col-md-6">
+            <div class="timetable-card">
+                <h2 class="timetable section-heading" id="timetable">Расписание звонков</h2> 
+                <ol> 
+                    <li>08:20 - 09:40</li> 
+                    <li>09:50 - 11:10</li> 
+                    <li class="break">Перемена 40 минут</li> 
+                    <li>11:50 - 13:10</li> 
+                    <li>13:20 - 14:40</li> 
+                    <li class="break">Перемена 20 минут</li> 
+                    <li>15:00 - 16:20</li> 
+                    <li>16:30 - 17:50</li> 
+                    <li>18:00 - 19:20</li> 
+                    <li>19:30 - 20:50</li> 
+                </ol> 
+
+                <!-- Секция с добавленной таблицей -->
+                <div class="table-box">
+                    <h3 class="section-heading" style="font-size: 1.1rem;">Расписание занятий</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle m-0">
+                            <thead>
+                                <tr>
+                                    <th>Номер пары</th>
+                                    <th>Название предмета</th>
+                                    <th>Аудитория</th>
+                                    <th>Преподаватель</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>15:00 - 16:20</td>
+                                    <td>Параллельное программирование</td>
+                                    <td>222</td>
+                                    <td>Новиков А.К</td>
+                                </tr>
+                                <tr>
+                                    <td>16:30 - 17:50</td>
+                                    <td>Параллельное программирование</td>
+                                    <td>217</td>
+                                    <td>Новиков А.К</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Секция с полем ввода -->
+                <div class="input-box">
+                    <label for="user-notes" class="form-label font-weight-bold text-secondary">Заметки к расписанию:</label>
+                    <input type="text" class="form-control" id="user-notes" placeholder="Введите текст или номер кабинета...">
+                </div>
+            </div>
+        </div>
+
     </div>
-</body>
+</div>
+
+</body> 
 </html>

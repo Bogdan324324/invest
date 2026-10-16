@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя первая страница</title>
+    <style>
+        :root {
+            /* Новая современная цветовая гамма */
+            --main-color: #2c3e50;
+            --h-color: #ffffff;
+            --h-background: #16a085; /* Изумрудный оттенок */
+            --accent-border: #bdc3c7;
+        }
+
+        .section-header {
+            background: var(--h-background);
+            color: var(--h-color);
+        }
+        
+        .title-header {
+            background: var(--main-color);
+            color: #ffffff;
+        }
+        
+        body {
+            color: #2c3e50;
+            background: #f8f9fa; 
+        }
+        
+        .strong {
+            font-weight: 900;
+        }
+        
+        .italic {
+            font-style: italic; 
+        }
+        
+        .strike {
+            text-decoration: line-through; 
+        }
+        
+        .section-card {
+            border: 1px solid var(--accent-border);
+            border-radius: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .05);
+            background: #ffffff;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        
+        .section-card:hover {
+            box-shadow: 0 12px 35px rgba(22, 160, 133, .15);
+            transform: translateY(-4px);
+            transition: all 0.3s ease;
+        }
+        
+        .section-header {
+            background: var(--h-background);
+            color: var(--h-color);
+            font-weight: 800;
+            font-size: 1.15rem;
+            padding: 1rem 1.5rem;
+            margin-top: 0;
+            border-radius: 0;
+        }
+        
+        .title-header {
+            padding: 1.5rem;
+            margin: 2.5rem 0;
+            text-align: center;
+            border: 1px solid var(--h-background);
+            border-radius: 1.25rem;
+        }
+        
+        /* Стили для таблицы */
+        table {
+            width: 100%;
+            margin: 1rem 0;
+        }
+        th, td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--accent-border);
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <script>
+        console.log('Hello world!');
+    </script> 
+
+<div class="container">
+    <h1 class="title-header"> Моя первая страница </h1>  
+
+    <section class="section-card">
+        <h2 class="section-header">Мячик</h2>
+        <div id="ball" class="p-4">
+            <span class="fw-bold">Наша Таня громко плачет:</span><br>
+            <span class="italic">Уронила в речку мячик.</span><br>
+            <span>-Тише, Танечка, не плачь:</span><br>
+            <span class="strike">Не утонет в речке мяч.</span><br>
+            <b><i>Автор: А. Л. Барто</i></b>
+        </div>
+    </section>
+
+    <section class="section-card">
+        <h2 class="section-header">Расписание звонков</h2>  
+        <div id="schedule" class="p-4">
+            <ol>
+                <li>08:20 - 09:40 </li>
+                <li>09:50 - 11:10</li>
+                <ul>
+                    <li>Перемена 40 минут</li>
+                </ul>
+                <li>11:50 - 13:10 </li>
+                <li>13:20 - 14:40 </li>
+                <ul>
+                    <li>Перемена 20 минут</li>
+                </ul>
+                <li>15:00 - 16:20</li>
+                <li>16:30 - 17:50 </li>
+                <li>18:00 - 19:20</li>
+                <li>19:30 - 20:50</li>
+            </ol>
+        </div>
+    </section>
+
+    <section class="section-card">
+        <h2 class="section-header">Расписание пар </h2>
+        <div id="timetable" class="table-responsive p-4">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Предмет</th>
+                        <th>Аудитория</th>
+                        <th>Препод</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Теория чисел</td>
+                        <td>235/4к</td>
+                        <td>Петров.Н.Н</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Матан</td>
+                        <td>219/4к</td>
+                        <td>Наталья.В.Л</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Теория чисел</td>
+                        <td>235/4к</td>
+                        <td>Петров.Н.Н</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="section-card">
+        <h2 class="section-header">Весёлые картинки</h2> 
+        <div id="mems" class="row p-4">
+            <div class="col-md-6">
+                <img src="https://picsum.photos" alt="no stressing" class="img-fluid rounded">
+            </div>
+        </div>
+    </section>
+
+    <section class="section-card">
+        <h2 class="section-header">Дневник </h2>
+        <div id="diary" class="p-4">
+            <form action="post" class="row g-3"> 
+                <div class="col-12"> 
+                    <label for="fio" class="form-label">Фамилия, имя, отчество</label> 
+                    <input class="form-control" type="text" id="fio" value="Трищилов Богдан Алексеевич">
+                </div>  
+                
+                <div class="col-md-6">
+                    <label class="form-label d-block">Пол</label> 
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="m" name="gender" id="genderM" checked>
+                        <label class="form-check-label" for="genderM">Мужской</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="f" name="gender" id="genderF">
+                        <label class="form-check-label" for="genderF">Женский</label>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="school" class="form-label">Школа</label> 
+                    <input class="form-control" type="text" id="school" value="101">
+                </div> 
+                
+                <div class="col-md-6">
+                    <label for="locality" class="form-label">Населенный пункт</label> 
+                    <input class="form-control" type="text" id="locality" value="Ижевск">
+                </div> 
+                
+                <div class="col-md-6">
+                    <label for="color" class="form-label">Цвет обложки</label> 
+                    <input class="form-control" type="text" id="color" value="#cac7e1">
+                </div> 
+                
+                <div class="col-md-6">
+                    <label for="year" class="form-label">Год начала обучения</label> 
+                    <input class="form-control" type="text" id="year" value="2012">
+                </div> 
+                
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label> 
+                    <input class="form-control" type="text" id="email" value="email.com">
+                </div> 
+          
+                <div class="col-md-6">
+                    <label for="phone" class="form-label">Телефон</label> 
+                    <input class="form-control" type="tel" id="phone" value="+79999999999">
+                </div>  
+                
+                <div class="col-12">
+                    <input type="submit" class="btn btn-success" id="create" value="Создать обложку">
+                </div> 
+            </form>
+        </div>
+    </section>
+
+    <section class="section-card">
+        <h2 class="section-header"> Бухгалтерия</h2>
+        <div id="accountancy" class="p-4"></div>
+    </section>
+
+    <section class="section-card">
+        <h2 class="section-header">Производные </h2>
+        <div id="derivatives" class="p-4"></div>
+    </section>
+</div>
+
+</body>
+</html>
