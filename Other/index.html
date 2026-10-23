@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя первая страница</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0d0808;
+            --bg-card: #1a0f0f;
+            --bg-section: #251818;
+            --border-dark: #3d2828;
+            --accent-red: #8b0000;
+            --accent-orange: #cc5500;
+            --accent-gold: #cd853f;
+            --accent-gold-light: #daa520;
+            --text-primary: #e0d0c0;
+            --text-secondary: #a09080;
+            --text-muted: #605040;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-dark);
+            background-image: 
+                repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(139, 0, 0, 0.03) 50px, rgba(139, 0, 0, 0.03) 51px),
+                repeating-linear-gradient(0deg, transparent, transparent 50px, rgba(205, 133, 63, 0.02) 50px, rgba(205, 133, 63, 0.02) 51px);
+            color: var(--text-primary);
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Декоративная верхняя панель */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, 
+                var(--accent-red), 
+                var(--accent-gold), 
+                var(--accent-orange), 
+                var(--accent-gold), 
+                var(--accent-red)
+            );
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(205, 133, 63, 0.5);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Заголовок с орнаментом */
+        .title-header {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            color: var(--accent-gold-light);
+            text-shadow: 
+                0 0 10px rgba(205, 133, 63, 0.8),
+                0 0 20px rgba(205, 133, 63, 0.5),
+                2px 2px 4px rgba(0, 0, 0, 0.9);
+            margin: 3rem 0 4rem;
+            padding: 2rem;
+            position: relative;
+            border: 3px solid var(--border-dark);
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-section) 100%);
+            box-shadow: 
+                inset 0 0 50px rgba(0, 0, 0, 0.8),
+                0 0 30px rgba(139, 0, 0, 0.3);
+        }
+
+        .title-header::before,
+        .title-header::after {
+            content: '❧';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-red);
+            font-size: 2rem;
+            text-shadow: 0 0 10px rgba(139, 0, 0, 0.8);
+        }
+
+        .title-header::before {
+            left: 30px;
+        }
+
+        .title-header::after {
+            right: 30px;
+        }
+
+        /* Карточки секций */
+        .section-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-dark);
+            border-radius: 4px;
+            margin-bottom: 2.5rem;
+            overflow: hidden;
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.6),
+                inset 0 0 100px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .section-card:hover {
+            box-shadow: 
+                0 15px 50px rgba(139, 0, 0, 0.3),
+                inset 0 0 100px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .section-card:hover::before {
+            border-color: var(--accent-gold);
+            box-shadow: inset 0 0 20px rgba(205, 133, 63, 0.2);
+        }
+
+        /* Заголовки секций */
+        .section-header {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--accent-gold-light);
+            background: linear-gradient(180deg, var(--bg-section) 0%, var(--bg-card) 100%);
+            padding: 1.2rem 2rem;
+            margin: 0;
+            border-bottom: 3px solid var(--accent-red);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--accent-gold), 
+                var(--accent-orange), 
+                var(--accent-gold), 
+                transparent
+            );
+        }
+
+        /* Контент секций */
+        .section-card .p-4 {
+            padding: 2rem;
+            background: var(--bg-card);
+        }
+
+        /* Стили для мячика */
+        #ball {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        #ball .fw-bold {
+            color: var(--accent-gold-light);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        #ball .italic {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        #ball .strike {
+            text-decoration: line-through;
+            color: var(--accent-red);
+            text-decoration-color: var(--accent-red);
+            text-decoration-thickness: 2px;
+        }
+
+        #ball b i {
+            color: var(--accent-orange);
+            display: block;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Расписание */
+        #schedule ol {
+            list-style: none;
+            counter-reset: schedule-counter;
+        }
+
+        #schedule ol > li {
+            counter-increment: schedule-counter;
+            margin-bottom: 0.8rem;
+            padding-left: 3rem;
+            position: relative;
+            color: var(--text-primary);
+        }
+
+        #schedule ol > li::before {
+            content: counter(schedule-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2rem;
+            height: 2rem;
+            background: var(--bg-section);
+            border: 2px solid var(--accent-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            color: var(--accent-gold-light);
+            font-size: 0.9rem;
+        }
+
+        #schedule ul {
+            margin-left: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        #schedule ul li {
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Таблица */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: var(--bg-section);
+        }
+
+        .table thead {
+            background: linear-gradient(180deg, var(--bg-section) 0%, var(--bg-card) 100%);
+        }
+
+        .table th {
+            font-family: 'Cinzel', serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            color: var(--accent-gold-light);
+            padding: 1rem;
+            border-bottom: 3px solid var(--accent-red);
+            text-align: left;
+        }
+
+        .table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-dark);
+            color: var(--text-primary);
+        }
+
+        .table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            background: rgba(205, 133, 63, 0.1);
+        }
+
+        .table-striped tbody tr:nth-child(odd) {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Картинки */
+        #mems img {
+            border: 3px solid var(--border-dark);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        #mems img:hover {
+            border-color: var(--accent-gold);
+            box-shadow: 
+                0 0 30px rgba(205, 133, 63, 0.4),
+                0 10px 40px rgba(0, 0, 0, 0.6);
+            transform: scale(1.02);
+        }
+
+        /* Формы */
+        .form-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-gold);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            background: var(--bg-section);
+            border: 2px solid var(--border-dark);
+            color: var(--text-primary);
+            border-radius: 3px;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: var(--bg-section);
+            border-color: var(--accent-gold);
+            color: var(--text-primary);
+            box-shadow: 
+                0 0 0 3px rgba(205, 133, 63, 0.2),
+                0 0 20px rgba(205, 133, 63, 0.3);
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Кнопки выбора пола */
+        .gender-radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 0.5rem;
+        }
+
+        .gender-radio-group input[type="radio"] {
+            display: none;
+        }
+
+        .gender-radio-group label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 35px;
+            border: 2px solid var(--border-dark);
+            border-radius: 3px;
+            color: var(--text-secondary);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--bg-section);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            font-family: 'Cinzel', serif;
+        }
+
+        .gender-radio-group label:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            box-shadow: 0 0 15px rgba(205, 133, 63, 0.3);
+        }
+
+        .gender-radio-group input[type="radio"]:checked + label {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            border-color: #4a90e2;
+            color: #ffffff;
+            box-shadow: 
+                0 0 20px rgba(74, 144, 226, 0.6),
+                inset 0 0 10px rgba(74, 144, 226, 0.3);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Кнопка отправки */
+        .btn-success {
+            font-family: 'Cinzel', serif;
+            background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-orange) 100%);
+            border: 2px solid var(--accent-gold);
+            color: var(--accent-gold-light);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 3px;
+            border-radius: 3px;
+            padding: 1rem 2rem;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 5px 20px rgba(139, 0, 0, 0.4),
+                inset 0 0 20px rgba(0, 0, 0, 0.3);
+            margin-top: 1rem;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-gold) 100%);
+            border-color: var(--accent-gold-light);
+            color: #ffffff;
+            box-shadow: 
+                0 8px 30px rgba(205, 133, 63, 0.5),
+                inset 0 0 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Декоративные разделители */
+        .ornament-divider {
+            text-align: center;
+            margin: 2rem 0;
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+            opacity: 0.6;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .title-header {
+                font-size: 1.8rem;
+                letter-spacing: 4px;
+                padding: 1.5rem 1rem;
+            }
+
+            .section-header {
+                font-size: 1.1rem;
+                letter-spacing: 2px;
+            }
+
+            .gender-radio-group {
+                flex-direction: column;
+            }
+
+            .gender-radio-group label {
+                width: 100%;
+            }
+        }
+
+        /* Скроллбар */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-red);
+            border: 2px solid var(--bg-dark);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-gold);
+        }
+
+        /* Выделение текста */
+        ::selection {
+            background: var(--accent-red);
+            color: var(--accent-gold-light);
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <script>
+        console.log('Hello world!');
+    </script> 
+
+<div class="container">
+    <h1 class="title-header">Моя Первая Страница</h1>  
+
+    <section class="section-card">
+        <h2 class="section-header">✦ Мячик ✦</h2>
+        <div id="ball" class="p-4">
+            <span class="fw-bold">Наша Таня громко плачет:</span><br>
+            <span class="italic">Уронила в речку мячик.</span><br>
+            <span>-Тише, Танечка, не плачь:</span><br>
+            <span class="strike">Не утонет в речке мяч.</span><br>
+            <b><i>Автор: А. Л. Барто</i></b>
+        </div>
+    </section>
+
+    <section class="section-card">
+        <h2 class="section-header"> Расписание Звонков ✦</h2>  
+        <div id="schedule" class="p-4">
+            <ol>
+                <li>08:20 - 09:40</li>
+                <li>09:50 - 11:10</li>
+                <ul>
+                    <li>Перемена 40 минут</li>
+                </ul>
+                <li>11:50 - 13:10</li>
+                <li>13:20 - 14:40</li>
+                <ul>
+                    <li>Перемена 20 минут</li>
+                </ul>
+                <li>15:00 - 16:20</li>
+                <li>16:30 - 17:50</li>
+                <li>18:00 - 19:20</li>
+                <li>19:30 - 20:50</li>
+            </ol>
+        </div>
+    </section>
+
+    <section class="section-card">
+        <h2 class="section-header">✦ Расписание Пар ✦</h2>
+        <div id="timetable" class="table-responsive p-4">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Предмет</th>
+                        <th>Аудитория</th>
+                        <th>Препод</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Выпуклый анализ</td>
+                        <td>219/4к</td>
+                        <td>Петров Н.Н</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Методы оптимизиций</td>
+                        <td>235/4к</td>
+                        <td>Петров Н.Н</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Теория чисел</td>
+                        <td>223/4к</td>
+                        <td>Латыпова Н.В</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="section-card">
+        <h2 class="section-header">✦ Весёлые Картинки ✦</h2> 
+        <div id="mems" class="row p-4">
+            <div class="col-md-6">
+                <img src="img/funny_dog.jpg" alt="not" height="400px" class="img-fluid rounded">
+            </div>
+        </div>
+    </section>
+
+    <section class="section-card">
+        <h2 class="section-header">✦ Дневник ✦</h2>
+        <div id="diary" class="p-4">
+            <form method="post" action="#" class="row g-3"> 
+                <div class="col-12"> 
+                    <label for="fio" class="form-label">Фамилия, Имя, Отчество</label> 
+                    <input class="form-control" type="text" id="fio" value="Трищилов Богдан Алексеевич">
+                </div>  
+                
+                <div class="col-md-6">
+                    <label class="form-label d-block">Пол</label> 
+                    <div class="gender-radio-group">
+                        <input type="radio" name="gender" id="genderM" value="m" checked>
+                        <label for="genderM">Мужской</label>
+                        
+                        <input type="radio" name="gender" id="genderF" value="f">
+                        <label for="genderF">Женский</label>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="school" class="form-label">Школа</label> 
+                    <input class="form-control" type="text" id="school" value="101">
+                </div> 
+                
+                <div class="col-md-6">
+                    <label for="locality" class="form-label">Населенный Пункт</label> 
+                    <input class="form-control" type="text" id="locality" value="Ижевск">
+                </div> 
+                
+                <div class="col-md-6">
+                    <label for="color" class="form-label">Цвет Обложки</label> 
+                    <input class="form-control" type="text" id="color" value="#cac7e1">
+                </div> 
+                
+                <div class="col-md-6">
+                    <label for="year" class="form-label">Год Начала Обучения</label> 
+                    <input class="form-control" type="text" id="year" value="2012">
+                </div> 
+                
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label> 
+                    <input class="form-control" type="email" id="email" value="email.com">
+                </div> 
+          
+                <div class="col-md-6">
+                    <label for="phone" class="form-label">Телефон</label> 
+                    <input class="form-control" type="tel" id="phone" value="+79999999999">
+                </div>  
+                
+                <div class="col-12">
+                    <input type="submit" class="btn btn-success" id="create" value="✦ Создать Обложку ✦">
+                </div> 
+            </form>
+        </div>
+    </section>
+
+    <section class="section-card">
+        <h2 class="section-header">✦ Бухгалтерия ✦</h2>
+        <div id="accountancy" class="p-4">
+            <p style="color: var(--text-muted); font-style: italic;">Раздел в разработке...</p>
+        </div>
+    </section>
+
+    <section class="section-card">
+        <h2 class="section-header">✦ Производные ✦</h2>
+        <div id="derivatives" class="p-4">
+            <p style="color: var(--text-muted); font-style: italic;">Раздел в разработке...</p>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

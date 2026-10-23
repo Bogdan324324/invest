@@ -1,0 +1,473 @@
+:root {
+    --bg-dark: #0d0808;
+    --bg-card: #1a0f0f;
+    --bg-section: #251818;
+    --border-dark: #3d2828;
+    --accent-red: #8b0000;
+    --accent-orange: #cc5500;
+    --accent-gold: #cd853f;
+    --accent-gold-light: #daa520;
+    --text-primary: #e0d0c0;
+    --text-secondary: #a09080;
+    --text-muted: #605040;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg-dark);
+    background-image: 
+        repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(139, 0, 0, 0.03) 50px, rgba(139, 0, 0, 0.03) 51px),
+        repeating-linear-gradient(0deg, transparent, transparent 50px, rgba(205, 133, 63, 0.02) 50px, rgba(205, 133, 63, 0.02) 51px);
+    color: var(--text-primary);
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* Декоративная верхняя панель */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, 
+        var(--accent-red), 
+        var(--accent-gold), 
+        var(--accent-orange), 
+        var(--accent-gold), 
+        var(--accent-red)
+    );
+    z-index: 1000;
+    box-shadow: 0 0 20px rgba(205, 133, 63, 0.5);
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Заголовок с орнаментом */
+.title-header {
+    font-family: 'Cinzel', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    color: var(--accent-gold-light);
+    text-shadow: 
+        0 0 10px rgba(205, 133, 63, 0.8),
+        0 0 20px rgba(205, 133, 63, 0.5),
+        2px 2px 4px rgba(0, 0, 0, 0.9);
+    margin: 3rem 0 4rem;
+    padding: 2rem;
+    position: relative;
+    border: 3px solid var(--border-dark);
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-section) 100%);
+    box-shadow: 
+        inset 0 0 50px rgba(0, 0, 0, 0.8),
+        0 0 30px rgba(139, 0, 0, 0.3);
+}
+
+.title-header::before,
+.title-header::after {
+    content: '❧';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent-red);
+    font-size: 2rem;
+    text-shadow: 0 0 10px rgba(139, 0, 0, 0.8);
+}
+
+.title-header::before {
+    left: 30px;
+}
+
+.title-header::after {
+    right: 30px;
+}
+
+/* Карточки секций */
+.section-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border-dark);
+    border-radius: 4px;
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+    box-shadow: 
+        0 10px 40px rgba(0, 0, 0, 0.6),
+        inset 0 0 100px rgba(0, 0, 0, 0.3);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.section-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.section-card:hover {
+    box-shadow: 
+        0 15px 50px rgba(139, 0, 0, 0.3),
+        inset 0 0 100px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px);
+}
+
+.section-card:hover::before {
+    border-color: var(--accent-gold);
+    box-shadow: inset 0 0 20px rgba(205, 133, 63, 0.2);
+}
+
+/* Заголовки секций */
+.section-header {
+    font-family: 'Cinzel', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--accent-gold-light);
+    background: linear-gradient(180deg, var(--bg-section) 0%, var(--bg-card) 100%);
+    padding: 1.2rem 2rem;
+    margin: 0;
+    border-bottom: 3px solid var(--accent-red);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    position: relative;
+}
+
+.section-header::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        var(--accent-gold), 
+        var(--accent-orange), 
+        var(--accent-gold), 
+        transparent
+    );
+}
+
+/* Контент секций */
+.section-card .p-4 {
+    padding: 2rem;
+    background: var(--bg-card);
+}
+
+/* Стили для мячика */
+#ball {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+#ball .fw-bold {
+    color: var(--accent-gold-light);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+#ball .italic {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+#ball .strike {
+    text-decoration: line-through;
+    color: var(--accent-red);
+    text-decoration-color: var(--accent-red);
+    text-decoration-thickness: 2px;
+}
+
+#ball b i {
+    color: var(--accent-orange);
+    display: block;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+/* Расписание */
+#schedule ol {
+    list-style: none;
+    counter-reset: schedule-counter;
+}
+
+#schedule ol > li {
+    counter-increment: schedule-counter;
+    margin-bottom: 0.8rem;
+    padding-left: 3rem;
+    position: relative;
+    color: var(--text-primary);
+}
+
+#schedule ol > li::before {
+    content: counter(schedule-counter);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2rem;
+    height: 2rem;
+    background: var(--bg-section);
+    border: 2px solid var(--accent-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    color: var(--accent-gold-light);
+    font-size: 0.9rem;
+}
+
+#schedule ul {
+    margin-left: 3rem;
+    margin-bottom: 1rem;
+}
+
+#schedule ul li {
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 0.5rem;
+}
+
+/* Таблица */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    background: var(--bg-section);
+}
+
+.table thead {
+    background: linear-gradient(180deg, var(--bg-section) 0%, var(--bg-card) 100%);
+}
+
+.table th {
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    color: var(--accent-gold-light);
+    padding: 1rem;
+    border-bottom: 3px solid var(--accent-red);
+    text-align: left;
+}
+
+.table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-dark);
+    color: var(--text-primary);
+}
+
+.table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background: rgba(205, 133, 63, 0.1);
+}
+
+.table-striped tbody tr:nth-child(odd) {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Картинки */
+#mems img {
+    border: 3px solid var(--border-dark);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+#mems img:hover {
+    border-color: var(--accent-gold);
+    box-shadow: 
+        0 0 30px rgba(205, 133, 63, 0.4),
+        0 10px 40px rgba(0, 0, 0, 0.6);
+    transform: scale(1.02);
+}
+
+/* Формы */
+.form-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent-gold);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    background: var(--bg-section);
+    border: 2px solid var(--border-dark);
+    color: var(--text-primary);
+    border-radius: 3px;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    background: var(--bg-section);
+    border-color: var(--accent-gold);
+    color: var(--text-primary);
+    box-shadow: 
+        0 0 0 3px rgba(205, 133, 63, 0.2),
+        0 0 20px rgba(205, 133, 63, 0.3);
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+/* Кнопки выбора пола */
+.gender-radio-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 0.5rem;
+}
+
+.gender-radio-group input[type="radio"] {
+    display: none;
+}
+
+.gender-radio-group label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 35px;
+    border: 2px solid var(--border-dark);
+    border-radius: 3px;
+    color: var(--text-secondary);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: var(--bg-section);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    font-family: 'Cinzel', serif;
+}
+
+.gender-radio-group label:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    box-shadow: 0 0 15px rgba(205, 133, 63, 0.3);
+}
+
+.gender-radio-group input[type="radio"]:checked + label {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+    border-color: #4a90e2;
+    color: #ffffff;
+    box-shadow: 
+        0 0 20px rgba(74, 144, 226, 0.6),
+        inset 0 0 10px rgba(74, 144, 226, 0.3);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Кнопка отправки */
+.btn-success {
+    font-family: 'Cinzel', serif;
+    background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-orange) 100%);
+    border: 2px solid var(--accent-gold);
+    color: var(--accent-gold-light);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 3px;
+    border-radius: 3px;
+    padding: 1rem 2rem;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 5px 20px rgba(139, 0, 0, 0.4),
+        inset 0 0 20px rgba(0, 0, 0, 0.3);
+    margin-top: 1rem;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-gold) 100%);
+    border-color: var(--accent-gold-light);
+    color: #ffffff;
+    box-shadow: 
+        0 8px 30px rgba(205, 133, 63, 0.5),
+        inset 0 0 20px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Декоративные разделители */
+.ornament-divider {
+    text-align: center;
+    margin: 2rem 0;
+    color: var(--accent-gold);
+    font-size: 1.5rem;
+    letter-spacing: 10px;
+    opacity: 0.6;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .title-header {
+        font-size: 1.8rem;
+        letter-spacing: 4px;
+        padding: 1.5rem 1rem;
+    }
+
+    .section-header {
+        font-size: 1.1rem;
+        letter-spacing: 2px;
+    }
+
+    .gender-radio-group {
+        flex-direction: column;
+    }
+
+    .gender-radio-group label {
+        width: 100%;
+    }
+}
+
+/* Скроллбар */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-red);
+    border: 2px solid var(--bg-dark);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-gold);
+}
+
+/* Выделение текста */
+::selection {
+    background: var(--accent-red);
+    color: var(--accent-gold-light);
+}

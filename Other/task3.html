@@ -1,0 +1,54 @@
+<!DOCTYPE html> 
+<html lang="ru"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <title>Расписание звонков</title> 
+    <style> 
+        ol { 
+            list-style-type: none; 
+            padding-left: 20px; 
+            counter-reset: lesson-counter; 
+        }
+        /* Стили для элементов списка (уроков и перемен) */
+        ol li {
+            transition: all 0.3s ease; /* Плавный переход для всех свойств */
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+        ol li:hover {
+            background-color: #f0f0f0; 
+            transform: translateX(5px); 
+            cursor: pointer;
+        }
+        ol li:not(.break) { 
+            counter-increment: lesson-counter; 
+            margin-bottom: 5px; 
+        }
+        ol li:not(.break)::before { 
+            content: counter(lesson-counter) ". "; 
+            font-weight: bold; 
+        }
+        .break { 
+            font-weight: bold; 
+            margin: 15px 0; 
+            color: rgb(0, 0, 0); 
+        }
+    </style> 
+</head> 
+<body> 
+    <!-- Добавлен класс и id timetable -->
+    <h2 class="timetable" id="timetable">Расписание звонков</h2> 
+    <ol> 
+        <li>08:20 - 09:40</li> 
+        <li>09:50 - 11:10</li> 
+        <li class="break">Перемена 40 минут</li> 
+        <li>11:50 - 13:10</li> 
+        <li>13:20 - 14:40</li> 
+        <li class="break">Перемена 20 минут</li> 
+        <li>15:00 - 16:20</li> 
+        <li>16:30 - 17:50</li> 
+        <li>18:00 - 19:20</li> 
+        <li>19:30 - 20:50</li> 
+    </ol> 
+</body> 
+</html>
