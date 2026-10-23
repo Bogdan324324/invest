@@ -1,0 +1,49 @@
+/* КАСТОМНАЯ ТЕМА ДЛЯ ПРЕЗЕНТАЦИИ "ИНВЕСТИЦИИ" */
+
+.reveal {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a2e;
+    font-size: 24px;
+}
+
+.reveal h1 { color: #fff; text-transform: none; font-weight: bold; font-size: 2.2em; margin-bottom: 25px; }
+.reveal h2 { color: #fff; text-transform: none; font-weight: bold; font-size: 1.8em; margin-bottom: 20px; }
+.reveal h3 { color: #4da6ff; text-transform: none; font-weight: bold; font-size: 1.4em; margin-bottom: 15px; }
+.reveal h4 { color: #fff; font-size: 1.1em; margin-bottom: 10px; }
+
+.reveal p, .reveal li { font-size: 0.85em; line-height: 1.6; color: #e0e0e0; margin-bottom: 10px; }
+.reveal a { color: #4da6ff; text-decoration: none; }
+.reveal a:hover { text-decoration: underline; }
+
+.reveal pre { background: #16213e; box-shadow: none; width: 100%; padding: 15px; margin: 10px 0; font-size: 0.65em; max-height: 60vh; }
+.reveal code { background: #16213e; color: #fff; padding: 3px 8px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.9em; }
+.reveal pre code { background: none; padding: 0; font-size: 1em; }
+
+.reveal table { font-size: 0.6em; border-collapse: collapse; width: 100%; margin: 15px auto; }
+.reveal table td, .reveal table th { padding: 4px 6px; border: 1px solid #4da6ff; text-align: center; color: #fff; vertical-align: middle; }
+.reveal table th { background: #16213e; color: #4da6ff; font-weight: bold; font-size: 1.1em; }
+
+.slide-menu { background: #1a1a2e !important; }
+.slide-menu-items { background: #1a1a2e !important; }
+.slide-menu-item { color: #fff !important; font-size: 14px; }
+.slide-menu-item.active { background: #4da6ff !important; color: #fff !important; }
+
+.reveal .slides { overflow: hidden; width: 100%; height: 100%; }
+.reveal .slides section { overflow: hidden; max-height: 100vh; padding: 20px 40px; }
+
+.reveal img { max-width: 75%; max-height: 65vh; margin: 15px auto; display: block; border-radius: 8px; object-fit: contain; }
+
+.reveal ul, .reveal ol { margin: 10px 0; padding-left: 30px; }
+.reveal ul li, .reveal ol li { margin-bottom: 8px; line-height: 1.5; }
+
+.reveal .slides section[data-markdown="./slides/slide01.md"] h1 { font-size: 3em; margin-bottom: 40px; color: #4da6ff; }
+.reveal .slides section[data-markdown="./slides/slide01.md"] p { font-size: 1.2em; margin-bottom: 15px; }
+
+@media screen and (max-width: 1024px) {
+    .reveal { font-size: 20px; }
+    .reveal h1 { font-size: 1.8em; }
+    .reveal h2 { font-size: 1.5em; }
+    .reveal h3 { font-size: 1.2em; }
+    .reveal p, .reveal li { font-size: 0.8em; }
+    .reveal table { font-size: 0.5em; }
+}

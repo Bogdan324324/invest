@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Интерактивный Ретро Чат</title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 16px;
+            color: #000000;
+            background-color: #ffffff;
+            margin: 8px;
+        }
+        #chat-window {
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+        .message {
+            margin-bottom: 2px;
+        }
+        .controls {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+        input[type="text"] {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 14px;
+            padding: 1px;
+            border: 1px solid #7a7a7a;
+            width: 220px;
+        }
+        button {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 14px;
+            background-color: #f0f0f0;
+            border: 1px solid #7a7a7a;
+            padding: 1px 6px;
+            cursor: pointer;
+        }
+        button:active {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Пустое окно чата -->
+    <div id="chat-window"></div>
+
+    <!-- Блок управления -->
+    <div class="controls">
+        <input type="text" id="message-input" placeholder="Напишите сообщение..." onkeydown="if(event.key === 'Enter') sendMessage()">
+        <button onclick="sendMessage()">Отправить</button>
+        <button id="loop-btn" onclick="toggleLoop()">Запустить цикл</button>
+        <!-- КНОПКА ДЛЯ ЦИКЛА С ВАШИМ СООБЩЕНИЕМ -->
+        <button onclick="runMessageCountLoop()">Цикл 1-5</button> 
+    </div>
+
+<script>
+    const chatWindow = document.getElementById('chat-window');
+    const messageInput = document.getElementById('message-input');
+    const loopBtn = document.getElementById('loop-btn');
+    let loopInterval = null;
+    let lastMessage = ""; // Хранит текст для цикла
+
+    // Функция отправки вашего сообщения
+    function sendMessage() {
+        const text = messageInput.value.trim();
+        if (text === "") return;
+        addMessage(text);
+        lastMessage = text;
+        messageInput.value = ""; // Очищаем поле после ввода
+    }
+
+    function addMessage(text) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'message';
+        msgDiv.textContent = text;
+        chatWindow.appendChild(msgDiv);
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    // ОБНОВЛЕННАЯ ФУНКЦИЯ: Цикл от 1 до 5 с вашим текстом
+    function runMessageCountLoop() {
+        let textToLoop = messageInput.value.trim();
+        if (textToLoop === "") {
+            textToLoop = lastMessage;
+        } else {
+            lastMessage = textToLoop;
+            messageInput.value = ""; // Очищаем поле
+        }
+
+        // Если вообще ничего не введено
+        if (textToLoop === "") {
+            alert("Сначала напишите текст в поле ввода!");
+            return;
+        }
+
+        // Запуск цикла на 5 повторений
+        for (let i = 1; i <= 5; i++) {
+            addMessage(`${textToLoop}`);
+        }
+    }
+
+    // Функция работы отдельной кнопки бесконечного цикла
+    function toggleLoop() {
+        if (loopInterval) {
+            clearInterval(loopInterval);
+            loopInterval = null;
+            loopBtn.textContent = "Запустить цикл";
+            return;
+        }
+
+        let textToLoop = messageInput.value.trim();
+        if (textToLoop === "") {
+            textToLoop = lastMessage;
+        } else {
+            lastMessage = textToLoop;
+            messageInput.value = "";
+        }
+
+        if (textToLoop === "") {
+            alert("Сначала напишите текст в поле ввода!");
+            return;
+        }
+
+        loopBtn.textContent = "Остановить цикл";
+        loopInterval = setInterval(() => {
+            addMessage(textToLoop);
+        }, 400);
+    }
+</script>
+</body>
+</html>
