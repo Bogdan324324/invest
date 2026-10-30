@@ -1,0 +1,30 @@
+body {
+    font-family: "Times New Roman", serif;
+    font-size: 16px;
+    margin: 8px;
+}
+
+#chat {
+    line-height: 1.2;
+    margin-bottom: 6px;
+}
+
+.controls {
+    display: flex;
+    gap: 4px;
+}
+
+input {
+    font-family: inherit;
+    border: 1px solid #7a7a7a;
+    width: 220px;
+    padding: 1px;
+}
+
+button {
+    font-family: inherit;
+    background: #f0f0f0;
+    border: 1px solid #7a7a7a;
+    padding: 1px 6px;
+    cursor: pointer;
+}
