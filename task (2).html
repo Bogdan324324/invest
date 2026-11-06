@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя первая страница</title>
+    <style>
+        :root {
+    --main-color: #141516;
+    --main-color: #80aedd;
+    --h-color: blue;
+    --h-background: hsl(261, 51%, 51%);
+}
+
+.section-header {
+    background: var(--h-background);
+    color: var(--h-color);
+
+ }
+ .title-header{
+    background: var(--h-color);
+    color: var(--h-background);
+ }
+ body {
+        color: #060608;
+        background: #ffffff; 
+    }
+    .strong {
+        font-weight: 900;
+    }
+    .italic {
+        font-style: italic; 
+    }
+    .strike {
+        text-decoration: line-through; 
+    }
+    .section-card {
+        border: 1px solid silver;
+        border-radius: 1rem 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
+    }
+    .section-card:hover {
+        box-shadow: 0 12px 35px rgba(111, 66, 193, .15);
+        transform: translateY(-4px);
+    }
+    .section-header {
+        background: var(--h-background);
+        color: var(--h-color);
+        font-weight: 800;
+        font-size: 1.15rem;
+        padding: 1rem 1.5rem;
+        margin-top:0;
+        border-radius: 1rem 0;
+    }
+    .title-header{
+    background: var(--h-color);
+    color: var(--h-background);
+    padding:1.5rem;
+    margin: 2.5rem 0;
+    text-align: center;
+    border: 1px solid gold;
+    border-radius: 1.25rem;
+    }
+    .vacation {
+        background-color: chocolate;
+    }
+</style>
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+
+</head>
+<body>
+    <script>
+        console.log('Hello world!');
+    </script> 
+
+
+
+<h1 class="title-header"> Моя первая страница </h1>  
+
+<section class="section-card">
+    <h2 class="section-header">Мячик</h2>
+    <div id="ball">
+        <span class="bold">Наша Таня громко плачет:</span><br>
+        <span class="italic">Уронила в речку мячик.</span>><br>
+        <span>-Тише, Танечка, не плачь:</span><br>
+        <span class="strike">Не утонет в речке мяч.</span>><br>
+        <b><i>Автор: А. Л. Барто</i></b>
+    </div>
+</section>
+<section>
+    <h2 class="section-header">Расписание звонков> </h2>  
+    <div id="schedule"></div>
+<ol>
+    <li>08:20 - 09:40 </li>
+    <li> 09:50 - 11:10</li>
+    <ul>
+        <li>Перемена 40 минут</li>
+    </ul>
+    <li>11:50 - 13:10 </li>
+    <li>13:20 - 14:40 </li>
+    <ul>
+        <li> Перемена 20 минут</li>
+     </ul>
+    <li> 15:00 - 16:20</li>
+    <li>16:30 - 17:50 </li>
+    <li> 18:00 - 19:20</li>
+    <li>19:30 - 20:50</li>
+</ol>
+</section>
+<section class="section-card">
+    <h2 class="section-header">Расписание пар </h2>
+    <div id="timetable" class="table-responsible">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Предмет</th>
+                <th>Аудитория</th>
+                <th>Препод</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Теория чисел</td>
+                <td>235/4к</td>
+                <td>Петров.Н.Н</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Матан</td>
+                <td>219/4к</td>
+                <td>Наталья.В.Л</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>теория чисел</td>
+                <td>235/4к</td>
+                <td>Петров.Н.Н</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+</section>
+<section class="section-card">
+    <h2 class="section-header">  Весёлые картинки</h2> 
+    <div id="mems" class="row">
+        <div id="mems" class="col-md-6">
+            <img src="img/img1.jpg"
+    alt=" no stressing"
+    height="400px">
+        </div>
+</div>
+</section>
+<section>
+    <h2 class="section-header">Дневник </h2>
+    <div id="diary"></div>
+    <form action="post" class="row"> 
+        <div> 
+            <label for= "fio"> Фамилия, имя, отчество </label> 
+            <input class="form-control" type="text" id="fio" 
+            value="Эруага Стенли Айомипоси">
+        </div>  
+            <div class="col-md-6">
+            <label class=" form-label d-block"
+            for="gender">Пол </label> 
+            <input type="radio" value="m"  class="btn-check" 
+            id="genderM" name="gender" checked>
+            <label for="genderM" class= "btn 
+            btn-outline-primary"> Мужской </label>
+            <input class="btn-check" type="radio" value="f" name="gender" checked>
+            <label for="genderF" class= "btn 
+            btn-outline-primary"> Женский </label>
+        </div>
+            <div class="col-md-3">
+            <label for= "school"> школа </label> 
+            <input class="form-control" type="text" id="school" 
+            value="21Б">
+        </div> 
+            <div class="col-md-3">
+            <label for= "class"> класс </label> 
+            <input class="form-control" type="text" id="class" 
+            value="21Б">
+        </div> 
+            <div class="col-md-3">
+            <label for= "locality"> Населенные пункт </label> 
+            <input  class="form-control"type="text" id="locality" 
+            value="Ижевск">
+        </div> 
+
+            <div class="col-md-3">
+            <label for= "color"> Цвет обложки</label> 
+            <input  class="form-control" type="text" id="color" 
+            value="#cac7e1">
+        </div> 
+        
+            <div class="col-md-3">
+            <label for= "year"> Год начала обучения</label> 
+            <input  class="form-control" type="text" id="year" 
+            value="2012">
+        </div> 
+        
+            <div class="col-md-3">
+            <label for= "email"> Email</label> 
+            <input  class="form-control" type="text" id="email" 
+            value="email.com">
+        </div> 
+  
+            <div class="col-md-3">
+            <label for= "phone">Телефон </label> 
+            <input  class="form-control" type="tel" id="phone" 
+            value="+79999999999">
+        </div>  
+            <div class="col-md-12">
+            <input   class= "btn 
+            btn-outline-primary btn-lg" type="submit" id="create" 
+            value="Создать обложку">
+        </div> 
+        
+
+</section>
+<section>
+    <h2 class="section-header"> Бухгалтерия</h2>
+    <div id="accountancy"></div>
+</section>
+<section>
+    <h2 class="section-header">Производные </h2>
+    <div id="derivatives"></div>
+</section>
+
+<link rel="stylesheet"
+ href="https://cdn.jsdelivr.net/npm/katex@0.19.1/dist/katex.min.css"
+  integrity="sha384-WwGtaC6ywCHxA5cstpj/3+xIZvTez8dq2IcBQaXRkenHZ7FVVq1ZROtURwfbtTlG"
+  crossorigin="anonymous">
+<script
+ defer src="https://cdn.jsdelivr.net/npm/katex@0.19.1/dist/katex.min.js" 
+ integrity="sha384-a1WQdjRj162i159OYq041X6I4K8NenkrI09LlPmiHg0YOb7CR+wJOraXwK9abpnE" 
+ crossorigin="anonymous"></script>
+ <script src = "mathlibrary/math.js"></script>
+<script>
+    let employees = [
+{
+    "surname": 'Иванов', //Фамилия
+    "name": 'Иван', //Имя
+    "patronymic": 'Иванович', //Отчество 
+    "birthday": '1987-11-30', //Дата рождения в формате ГГГГ-ММ-ДД
+    "experience": 5, //Стаж работы
+    "salary": 48200, //Зарплата гросс в месяц
+    "salary13": 3000, //Годовая премия
+    "gender": 'm', //Премия
+    "vacation": 0, //Месяц отпуска
+},
+{
+    "surname": 'Петров', 
+    "name": 'Петр', 
+    "patronymic": 'Петрович', 
+    "birthday": '2001-01-01',
+    "experience": 0,
+    "salary": 27600,
+    "salary13": 1000,
+    "gender": 'm',
+    "vacation": 8,
+},
+{
+    "surname": 'Капустина', 
+    "name": 'Ирина', 
+    "patronymic": 'Николаевна', 
+    "birthday": '1992-02-02',
+    "experience": 4,
+    "salary": 36000,
+    "salary13": 4000,
+    "gender": 'f',
+    "vacation": 3,
+},
+{
+    "surname": 'Билл', 
+    "name": 'Гейтс', 
+    "patronymic": '', 
+    "birthday": '1955-10-28',
+    "experience": 1,
+    "salary": 16900,
+    "salary13": 100,
+    "gender": 'm',
+    "vacation": 11,
+},
+{
+    "surname": 'Ложкина', 
+    "name": 'Галина', 
+    "patronymic": 'Ильинична', 
+    "birthday": '2002-01-13',
+    "experience": 1,
+    "salary": 80000,
+    "salary13": 100000,
+    "gender": 'f',
+    "vacation": 6,
+},
+{
+    "surname": 'Матрос', 
+    "name": 'Капитолия', 
+    "patronymic": 'Владовна', 
+    "birthday": '1975-04-20',
+    "experience": 20,
+    "salary": 90000,
+    "salary13": 4000,
+    "gender": 'f',
+    "vacation": 7,
+},
+{
+    "surname": 'Елисейская', 
+    "name": 'Италия', 
+    "patronymic": 'Франсовна', 
+    "birthday": '1999-08-12',
+    "experience": 3,
+    "salary": 36700,
+    "salary13": 4000,
+    "gender": 'f',
+    "vacation": 4,
+},
+{
+    "surname": 'Строгая', 
+    "name": 'Лада', 
+    "patronymic": '', 
+    "birthday": '1990-08-15',
+    "experience": 7,
+    "salary": 69000,
+    "salary13": 3600,
+    "gender": 'f',
+    "vacation": 9,
+},
+{
+    "surname": 'Император', 
+    "name": 'Павел', 
+    "patronymic": 'Григорьевич', 
+    "birthday": '1970-12-19',
+    "experience": 7,
+    "salary": 28999,
+    "salary13": 3900,
+    "gender": 'm',
+    "vacation": 1,
+},
+{
+    "surname": 'Ватрушкин', 
+    "name": 'Петр', 
+    "patronymic": 'Семенович', 
+    "birthday": '2000-05-13',
+    "experience": 1,
+    "salary": 200000,
+    "salary13": 0,
+    "gender": 'm',
+    "vacation": 5,
+},
+];
+          function Employee(data){
+              Object.assign(this, data);
+
+
+          }   
+          Employee.prototype.calculateNetsalary = function () {
+              return + (this.salary *1.15* .87).toFixed(2);
+          }   
+
+          Employee.prototype.calculateYearSalary = function() {
+              return(12*this.calculateNetsalary()+ .87 *this.salary13);
+          }
+
+          Employee.prototype.calculateTaxReturn = function() {
+              return Math.round(.13*this.calculateYearSalary());
+          }
+
+          Employee.prototype.calculateNewSalary = function() {
+              return (1.078*this.salary).toFixed(2);
+          }
+
+          Employee.prototype.calculateAge = function() {
+              let today = new Date();
+              let birthday = new Date(this.birthday);
+              let years = today.getFullYear() -birthday.getFullYear();
+              let months = today.getMonth() - birthday.getMonth();
+              if (months < 0){
+                  months+=12;
+                  years -=1;
+              }
+              return [years, months];
+          }
+
+          Employee.prototype.remainToPension = function() {
+              const [years,months] = this.calculateAge();
+              const monthsToPension =this.gender == "m" ? 64*12:59*12;
+              const remainsMonths = monthsToPension - years*12 + months;
+              if (remainsMonths < 0 ) return [null, null];
+              if (remainsMonths % 12 === 0) return [remainsMonths/12, 0];
+              return [Math.floor(remainsMonths/12), 12 - remainsMonths%12];
+          }
+
+          Employee.prototype.formatBirthday = function() {
+              const tempDate = new Date(this.birthday);
+              return `${tempDate.getDate()}.${months[tempDate.getMonth()][1]}.${tempDate.getFullYear()}`;
+          }
+          Employee.prototype.getAgeString = function() {
+              const [ageYear] = this.calculateAge();
+              return ageYear + this.pluralize(ageYear, 'год', 'года', 'лет');
+          }
+          Employee.prototype.pluralize = function(n,one, two, many) {
+              const mod10 = n%10;
+              const mod100 = n%100;
+              if (mod10 === 1 && mod100) return ' '+ one;
+              if ([2,3,4].includes(mod10)&& ![12, 13,14].includes (mod100)) return ' ' + two;
+              return ' '+ many;
+          }
+          Employee.prototype.getPensionString= function() {
+              const [rtpYear, rtpMonth] = this.remainToPension();
+              if (rtpYear === null) return 'Уже на пенсии';
+              const monthStr = this.pluralize(rtpMonth, 'месяц', 'месяца','месяцев');
+              if (rtpYear == 0) return `${rtpMonth}${monthStr}`;
+              const yearStr = this.pluralize(rtpYear, 'год', 'года','лет');
+              if (monthStr == 0) return `${rtpYear}${yearStr}`;
+              return `${rtpYear}${yearStr} ${rtpMonth}${monthStr}`;
+          }
+               
+
+          const months = [
+              ['','января'],
+              ['','фев'],
+              ['','март'],
+              ['','апрель'],
+              ['','май'],
+              ['','июнь'],
+              ['','июль'],
+              ['','авг'],
+              ['','сен'],
+              ['','окт'],
+              ['','ноя'],
+              ['','дек'],
+        ]
+
+
+          
+          for (let i = 0; i<employees.length; i++) {
+              let employee = new Employee(employees[i]);
+              console.log(employee);
+              const formatofBirthday = employee.formatBirthday();
+              const remains=employee.remainToPension();
+              console.log(remains);
+              console.log(formatofBirthday);
+
+              const age= employee.calculateAge();
+              const netSalary = employee.calculateNetsalary();
+              const yearSalary = employee.calculateYearSalary();
+              const taxreturn = employee.calculateTaxReturn();
+              const newsalary = employee.calculateNewSalary();
+          }
+          let table = `<table><thead><tr>
+          <th>№</th>
+          <th> .ФИО</th>
+          <th> .Дата рождения</th>
+          <th> .Возраст</th>
+          <th> .Зарплата гросс</th>
+          `;
+          for (let i =0; i < 12; i++){
+              table += `<th>${months[i][0]}</td>`;
+              }
+              table += `<th>Зарплата в ${new Date()}</th> 
+              <th> Общий доход</th>
+          <th> К вычету</th>
+          <th> Ост. до пенсии</th>
+          </tr></thead><tbody>`;
+            const rub = '&#x20bd;';
+            for (let i =0; i < employees.length; i++){
+              let employee = new Employee(employees[i]);
+              table += `<tr>
+                <td>${+i+1}</td>
+                <td>${employee.surname} ${employee.name}${employee.patronymic}</td>
+                <td>${employee.formatBirthday(months)}</td>
+                <td>${employee.getAgeString()}</td>
+                <td>${employee.salary}${rub}</td>`;
+                for (let j =0; j < 11; j++){
+              table += `<td ${j===employee.vacation ?'class="vacation"':""}>${employee.calculateNetsalary()}${rub}</td>`;
+              }
+              table += `<td ${11===employee.vacation ?'class="vacation"':""}>${employee.calculateNetsalary() + employee.salary13}${rub}</td>`;
+              table += `
+              <td>${employee.calculateNewSalary()}${rub}</td>
+                <td>${employee.calculateTaxReturn()}${rub}</td>
+                <td>${employee.getPensionString()}</td>
+                </tr>`;
+            
+            }
+
+          table += `</tbody></table>`
+          window.onload = () => {
+              let tableNode = document.querySelector("#accountancy");
+              tableNode.insertAdjacentHTML('beforeend', table);
+
+              document.querySelector('#create').onclick =(e) =>{
+                  e.preventDefault();
+                  let newWin = window.open("about:blank", "дневник", "width=420, height= 594");
+                  let template = `
+                  <style> 
+                    body{
+                        margin-top: 100px;
+                        text-align: center;
+                        font-size:large;
+                        background-color: ${document.querySelector('#color').value}
+                    }
+                    </style>
+                  <h1> Дневник</h1>
+
+                  <div>учени${document.querySelector('[name="gender"]:checked').value == 'm'?' ка': 'цы'} ${document.querySelector('#class').value} класса </div>
+                  <div>${document.querySelector('#school').value} ${document.querySelector('#locality').value}</div>
+                  <div>${document.querySelector('#fio').value}</div>
+                  <div>${document.querySelector('#year').value}/${document.querySelector('#year').value+1} учебного года </div>`;
+                  newWin.document.write(template);
+              }
+
+              const funcs = [
+                  ' const',
+                  'x',
+                  'x^n',
+                  'sqrt(x)', 
+                  'a^x',
+                  'e^x',
+                  'log(x)',
+                  'log(x,a)',
+                  'sin(x)',
+                  'asin(x)',
+                  'cos(x)',
+                  'acos(x)',
+                  'tan(x)',
+                  'atan(x)',
+              ];
+              let tableD = '<table><thead>';
+              table += '<tr><th>  функция</th><th> Производная</th></tr></thead><tbody>';
+                for (let func of funcs){
+                  tableD += '<tr>';
+                  tableD += '<td>'+katex.renderToString(math.parse(func).toTex())+'</td>';
+                  tableD += '<td>'+katex.renderToString(math.derivative(func, 'x').toTex())+'</td>';
+                  tableD += '</tr>';
+              }
+
+              table += '<tbody></table>';
+              let tableNodeD = document.querySelector('#derivatives');
+              for (let func of funcs){
+                  tableD += '<tr>';
+                  tableD += '<td>'+func+'</td>';
+                  tableD += '</tr>';
+              }
+              tableNodeD.insertAdjacentHTML('beforeend', tableD);
+          }
+</script>
+
+</body>
+</html>
