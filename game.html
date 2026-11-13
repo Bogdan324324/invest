@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>RNDM · Торговый терминал</title>
+    <style>
+        /* палитра как у трейдингвью, чтоб глаз радовался */
+        :root {
+            --bg: #131722;
+            --panel: #1e222d;
+            --border: #2a2e39;
+            --text: #d1d4dc;
+            --muted: #787b86;
+            --green: #26a69a;
+            --red: #ef5350;
+            --blue: #2962ff;
+            --yellow: #f0b90b;
+        }
+        * { box-sizing: border-box; }
+        html, body { margin: 0; height: 100%; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font: 13px "Segoe UI", Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .mono, table, #bookBox, input { font-family: Consolas, "Courier New", monospace; font-variant-numeric: tabular-nums; }
+        .good { color: var(--green); }
+        .bad { color: var(--red); }
+        .muted { color: var(--muted); }
+
+        /* шапка терминала */
+        header {
+            display: flex; align-items: center; gap: 18px;
+            padding: 6px 12px;
+            background: var(--panel);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .brand { font-weight: 700; letter-spacing: 2px; color: #fff; font-size: 14px; }
+        .brand span { color: var(--blue); }
+        .sym { display: flex; align-items: baseline; gap: 10px; }
+        .sym b { font-size: 16px; color: #fff; }
+        #symPrice { font-size: 16px; font-weight: 700; }
+        .sess { font-size: 11px; color: var(--muted); display: flex; gap: 10px; }
+        .sess b { color: var(--text); font-weight: 400; }
+        .acc { margin-left: auto; display: flex; gap: 16px; font-size: 11px; color: var(--muted); }
+        .acc div { display: flex; flex-direction: column; }
+        .acc b { font-size: 13px; color: #fff; }
+        .live { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); }
+        .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 1.6s infinite; }
+        @keyframes pulse { 50% { opacity: 0.35; } }
+
+        /* бегущая строка чужих тикеров, чисто для атмосферы */
+        #strip {
+            display: flex; gap: 22px; padding: 4px 12px;
+            font-size: 11px; border-bottom: 1px solid var(--border);
+            background: #171b26; white-space: nowrap; overflow: hidden;
+        }
+        #strip span b { color: var(--text); font-weight: 400; margin-right: 5px; }
+
+        main { flex: 1; display: flex; min-height: 0; }
+        #left { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+        /* тулбар над графиком */
+        #toolbar {
+            display: flex; align-items: center; gap: 8px;
+            padding: 6px 10px; border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .chip {
+            background: none; border: 1px solid var(--border); color: var(--muted);
+            padding: 3px 10px; border-radius: 4px; cursor: pointer; font-size: 11px;
+        }
+        .chip.on { color: #fff; border-color: var(--blue); background: rgba(41,98,255,0.15); }
+        #toolbar label { font-size: 11px; color: var(--yellow); display: flex; gap: 4px; align-items: center; cursor: pointer; }
+        #toolbar .hint { margin-left: auto; font-size: 10px; color: var(--muted); }
+        select {
+            background: var(--panel); color: var(--text);
+            border: 1px solid var(--border); border-radius: 4px; padding: 3px;
+        }
+
+        #container { flex: 1; min-height: 0; }
+
+        /* нижняя панель с вкладками, как отчеты у брокера */
+        #bottom { height: 195px; border-top: 1px solid var(--border); display: flex; flex-direction: column; }
+        #tabs { display: flex; background: var(--panel); border-bottom: 1px solid var(--border); }
+        .tab {
+            background: none; border: none; color: var(--muted);
+            padding: 7px 14px; cursor: pointer; font-size: 12px;
+            border-right: 1px solid var(--border);
+        }
+        .tab.on { color: #fff; background: var(--bg); box-shadow: inset 0 2px 0 var(--blue); }
+        .pane { flex: 1; overflow: auto; display: none; padding: 6px 10px; }
+        .pane.on { display: block; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { text-align: left; color: var(--muted); font-weight: 400; padding: 3px 8px; border-bottom: 1px solid var(--border); }
+        td { padding: 3px 8px; border-bottom: 1px solid #1c2030; }
+        .xbtn { background: none; border: 1px solid var(--border); color: var(--red); border-radius: 3px; cursor: pointer; padding: 0 6px; }
+
+        /* правая колонка: заявка, стакан, новости */
+        #side { width: 300px; border-left: 1px solid var(--border); display: flex; flex-direction: column; min-height: 0; }
+        .sec-h {
+            font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+            color: var(--muted); padding: 7px 10px 4px;
+        }
+        #ticket { padding: 0 10px 8px; border-bottom: 1px solid var(--border); }
+        #ticket .row { display: flex; gap: 6px; margin-bottom: 6px; }
+        input {
+            width: 100%; background: #10131c; border: 1px solid var(--border);
+            color: var(--text); border-radius: 4px; padding: 6px;
+        }
+        input:disabled { opacity: 0.4; }
+        button { font-family: inherit; }
+        .btn {
+            flex: 1; border: none; border-radius: 4px; padding: 8px 4px;
+            color: #fff; font-weight: 700; cursor: pointer; font-size: 12px;
+            background: #363a45;
+        }
+        .btn:disabled { opacity: 0.4; cursor: default; }
+        .btn.buy { background: var(--green); }
+        .btn.sell { background: var(--red); }
+        .btn.blue { background: var(--blue); }
+        .btn.ghost { background: none; border: 1px solid var(--border); color: var(--muted); font-weight: 400; }
+        #ordPreview { font-size: 11px; color: var(--muted); min-height: 15px; margin-bottom: 6px; }
+
+        /* стакан: строки с фоновыми барами объема */
+        #bookBox { padding: 0 10px 6px; font-size: 11px; border-bottom: 1px solid var(--border); }
+        .brow { display: flex; justify-content: space-between; padding: 1px 6px; cursor: pointer; border-radius: 2px; }
+        .brow:hover { outline: 1px solid var(--border); }
+        #bookSpread { text-align: center; color: var(--muted); padding: 2px; font-size: 10px; }
+
+        #newsBox { flex: 1; overflow-y: auto; padding: 0 10px 8px; }
+        .news-item { padding: 5px 0; border-bottom: 1px solid #1c2030; font-size: 12px; }
+        .news-item .meta { font-size: 10px; color: var(--muted); }
+        #journalBox div { padding: 2px 0; font-size: 12px; border-bottom: 1px solid #1c2030; }
+
+        /* модалки отчета и настроек */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 10; }
+        .modal[hidden] { display: none; } /* без этого flex перебивает hidden, наступает на эти грабли каждый раз */
+        .mbox { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; width: 430px; max-height: 90vh; overflow: auto; padding: 18px 22px; }
+        .mbox h2 { margin: 0 0 12px; font-size: 16px; color: #fff; }
+        .mbox .row { display: flex; gap: 8px; margin-top: 14px; }
+        .mbox label { display: block; font-size: 11px; color: var(--muted); margin: 8px 0 3px; }
+        #reportMeta { font-size: 11px; color: var(--muted); margin-top: 10px; }
+
+        @media (max-width: 1100px) { .sess { display: none; } #side { width: 260px; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">RNDM<span>·TERMINAL</span></div>
+        <div class="sym">
+            <b>RNDM</b>
+            <span id="symPrice" class="mono">-</span>
+            <span id="symChange" class="mono">-</span>
+        </div>
+        <div class="sess mono">
+            <span>О <b id="sessO">-</b></span>
+            <span>Макс <b id="sessH">-</b></span>
+            <span>Мин <b id="sessL">-</b></span>
+            <span>Объем <b id="sessV">-</b></span>
+        </div>
+        <div class="acc mono">
+            <div>Капитал <b id="accEq">-</b></div>
+            <div>Свободно <b id="accCash">-</b></div>
+            <div>P&amp;L сессии <b id="accPnl">-</b></div>
+        </div>
+        <div class="live"><span class="dot"></span><span id="dateView">-</span> · <span id="dayView">-</span></div>
+    </header>
+
+    <div id="strip" class="mono"></div>
+
+    <main>
+        <div id="left">
+            <div id="toolbar">
+                <button class="chip" data-n="20">20 баров</button>
+                <button class="chip" data-n="60">60</button>
+                <button class="chip on" data-n="0">Все</button>
+                <label><input type="checkbox" id="smaChk" checked> SMA 20</label>
+                <select id="speedSel">
+                    <option value="1200">0.5x</option>
+                    <option value="600" selected>1x</option>
+                    <option value="300">2x</option>
+                    <option value="120">4x</option>
+                </select>
+                <button class="btn blue" id="playBtn" style="flex:0 0 auto; padding: 4px 12px;">▶ Реплей</button>
+                <button class="btn" id="nextBtn" style="flex:0 0 auto; padding: 4px 12px;">⏭ Бар</button>
+                <button class="chip" id="settingsBtn">⚙ Параметры</button>
+                <button class="chip" id="newBtn">↺ Новая сессия</button>
+                <span class="hint">Space — бар · B / S — купить / продать</span>
+            </div>
+
+            <div id="container"></div>
+
+            <div id="bottom">
+                <div id="tabs">
+                    <button class="tab on" data-t="pos">Позиция</button>
+                    <button class="tab" data-t="ord">Заявки <span id="ordCount"></span></button>
+                    <button class="tab" data-t="trd">Сделки</button>
+                    <button class="tab" data-t="log">Журнал</button>
+                </div>
+                <div class="pane on" id="pane-pos">
+                    <div id="posBody" class="mono"></div>
+                    <div style="display:flex; gap:6px; margin-top:8px; align-items:center;">
+                        <span class="muted" style="font-size:11px;">Стоп-лосс</span>
+                        <input id="slInput" style="width:90px;" placeholder="цена">
+                        <span class="muted" style="font-size:11px;">Тейк-профит</span>
+                        <input id="tpInput" style="width:90px;" placeholder="цена">
+                        <button class="btn ghost" id="applySlTp" style="flex:0 0 auto; padding:5px 10px;">Применить</button>
+                        <button class="btn ghost" id="clearSlTp" style="flex:0 0 auto; padding:5px 10px;">Снять</button>
+                    </div>
+                </div>
+                <div class="pane" id="pane-ord">
+                    <table>
+                        <thead><tr><th>№</th><th>Тип</th><th>Сторона</th><th>Кол-во</th><th>Цена</th><th></th></tr></thead>
+                        <tbody id="ordersBody"></tbody>
+                    </table>
+                </div>
+                <div class="pane" id="pane-trd">
+                    <table>
+                        <thead><tr><th>Время</th><th>Операция</th><th>Кол-во</th><th>Цена</th><th>Комиссия</th><th>Реализ. P&amp;L</th><th>Основание</th></tr></thead>
+                        <tbody id="tradesBody"></tbody>
+                    </table>
+                </div>
+                <div class="pane" id="pane-log"><div id="journalBox"></div></div>
+            </div>
+        </div>
+
+        <div id="side">
+            <div class="sec-h">Новая заявка</div>
+            <div id="ticket">
+                <div class="row">
+                    <select id="ordType" style="flex:1;">
+                        <option value="market">Рыночная</option>
+                        <option value="limit">Лимитная</option>
+                    </select>
+                    <input id="ordQty" value="10" style="flex:1;" placeholder="кол-во">
+                </div>
+                <div class="row">
+                    <input id="ordLimit" placeholder="цена лимитной заявки" disabled>
+                </div>
+                <div id="ordPreview" class="mono"></div>
+                <div class="row">
+                    <button class="btn buy" id="buyBtn">КУПИТЬ</button>
+                    <button class="btn sell" id="sellBtn">ПРОДАТЬ</button>
+                </div>
+                <div class="row">
+                    <button class="btn ghost" id="maxQtyBtn">Макс. объем</button>
+                    <button class="btn ghost" id="closePosBtn">Закрыть позицию</button>
+                </div>
+            </div>
+
+            <div class="sec-h">Стакан · клик по цене = лимитка</div>
+            <div id="bookBox" class="mono">
+                <div id="bookAsks"></div>
+                <div id="bookSpread"></div>
+                <div id="bookBids"></div>
+            </div>
+
+            <div class="sec-h">Лента новостей</div>
+            <div id="newsBox"></div>
+        </div>
+    </main>
+
+    <!-- отчет в конце сессии, как у брокера -->
+    <div class="modal" id="reportModal" hidden>
+        <div class="mbox">
+            <h2>Отчет по сессии</h2>
+            <table id="reportBody"></table>
+            <div id="reportMeta"></div>
+            <div class="row">
+                <button class="btn blue" id="againBtn">Новая сессия</button>
+                <button class="btn ghost" id="closeReportBtn">Посмотреть график</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- настройки симуляции, все руками -->
+    <div class="modal" id="setModal" hidden>
+        <div class="mbox">
+            <h2>Параметры симуляции</h2>
+            <label>Начальный депозит, ₽</label><input id="setDeposit" value="100000">
+            <label>Длина сессии, торговых дней (30–400)</label><input id="setDays" value="120">
+            <label>Комиссия брокера, % от оборота</label><input id="setFee" value="0.05">
+            <label>Базовая дневная волатильность, %</label><input id="setVol" value="1.2">
+            <label>Вероятность новости за день, %</label><input id="setNews" value="15">
+            <div class="row">
+                <button class="btn blue" id="applySet">Применить и начать</button>
+                <button class="btn ghost" id="closeSet">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../charts/anychart-core.min.js"></script>
+    <script src="../charts/anychart-stock.min.js"></script>
+
+    <script>
+        // ================= настройки (меняются через модалку) =================
+        var CFG = {
+            deposit: 100000,   // стартовый депозит
+            days: 120,         // сколько торговых дней длится сессия
+            history: 40,       // предыстория на графике, чтоб было на что смотреть
+            fee: 0.0005,       // комиссия 0.05% с оборота, брокер бесплатно не работает
+            baseVol: 0.012,    // базовая сигма дневной доходности (1.2%)
+            newsP: 0.15        // шанс новости в день
+        };
+        var DAY_MS = 86400000;
+        var SLIP_MAX = 0.0015; // максимальное проскальзывание рыночной заявки, 0.15%
+
+        // новости: заголовок, источник и диапазон удара по цене
+        var newsList = [
+            { t: "Эмитент опубликовал отчетность выше консенсус-прогноза", s: "Раскрытие", min: 0.02, max: 0.06 },
+            { t: "Подписан долгосрочный контракт с крупным заказчиком", s: "Раскрытие", min: 0.02, max: 0.05 },
+            { t: "Совет директоров рекомендовал дивиденды выше ожиданий", s: "Раскрытие", min: 0.01, max: 0.04 },
+            { t: "Объявлена программа обратного выкупа акций", s: "Раскрытие", min: 0.01, max: 0.05 },
+            { t: "Крупный пакет акций выставлен на продажу", s: "Рынок", min: -0.05, max: -0.02 },
+            { t: "Отчетность слабее ожиданий, маржа снижается", s: "Раскрытие", min: -0.06, max: -0.02 },
+            { t: "Регулятор announced проверку в отношении компании", s: "Макро", min: -0.06, max: -0.02 },
+            { t: "Ключевой топ-менеджер покидает компанию", s: "Раскрытие", min: -0.04, max: -0.01 },
+            { t: "ЦБ сигнализирует о более жесткой политике", s: "Макро", min: -0.05, max: -0.01 },
+            { t: "Сектор поддерживается притоком нерезидентов", s: "Рынок", min: 0.01, max: 0.04 },
+            { t: "Аналитики повышают целевые цены по сектору", s: "Рынок", min: 0.01, max: 0.03 },
+            { t: "Геополитический фон ухудшается, индекс-wide распродажа", s: "Макро", min: -0.06, max: -0.02 }
+        ];
+
+        // ================= состояние =================
+        var chart, table, volTable, eqTable, buyTable, sellTable, smaInd;
+        var cash, shares, basis;         // basis - суммарная себестоимость позиции ВКЛЮЧАЯ комиссии
+        var sl = null, tp = null;        // стоп-лосс и тейк-профит на всю позицию
+        var orders = [], ordId = 0;      // активные лимитки
+        var tradesN = 0, sellsN = 0, winsN = 0, feesTotal = 0, realized = 0;
+        var bars = [];                   // все свечи как объекты, для логики и диапазона
+        var day, over, lastPrice, prevClose, startPrice;
+        var vol, drift;                  // текущая волатильность и дрейф рынка
+        var nextTs;                      // дата следующего (еще не нарисованного) бара
+        var eqLow, eqHigh, peakEq, maxDD, dailyRets, prevEq;
+        var autoTimer = null, viewN = 0; // viewN: 0 = все бары, иначе последние N
+        var tickers = [
+            { n: "MOEX", p: 3210, v: 0.004 }, { n: "RTS", p: 1145, v: 0.006 },
+            { n: "SBER", p: 312, v: 0.008 }, { n: "GAZP", p: 158, v: 0.009 },
+            { n: "LKOH", p: 7150, v: 0.007 }, { n: "USD/RUB", p: 92.4, v: 0.004 },
+            { n: "BRENT", p: 84.2, v: 0.01 }
+        ];
+
+        // ================= утилиты =================
+        function rand(a, b) { return a + Math.random() * (b - a); }
+        function r2(x) { return Math.round(x * 100) / 100; } // js обожает 250.0000000003, лечим
+        function money(x) { return x.toLocaleString("ru-RU", { maximumFractionDigits: 2 }) + " ₽"; }
+        function pct(x) { return (x >= 0 ? "+" : "") + x.toFixed(2) + "%"; }
+        function fmtDate(ts) { return new Date(ts).toLocaleDateString("ru-RU", { day: "numeric", month: "short" }); }
+        function rndTime() {
+            // условное время внутри сессии, чисто для вида в таблицах
+            var h = 10 + Math.floor(Math.random() * 8), m = Math.floor(Math.random() * 60);
+            return (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m;
+        }
+        function $(id) { return document.getElementById(id); }
+
+        // нормальное случайное число через Бокса-Мюллера:
+        // z = sqrt(-2 * ln(u1)) * cos(2 * pi * u2), u1 и u2 равномерные из (0,1)
+        // никаких exp, все честно
+        function gauss() {
+            var u1 = Math.random() || 1e-12, u2 = Math.random();
+            return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+        }
+
+        // следующий торговый день: выходные биржа не работает, скипаем
+        function nextTradingTs(ts) {
+            do { ts += DAY_MS; } while (new Date(ts).getDay() === 0 || new Date(ts).getDay() === 6);
+            return ts;
+        }
+
+        // ================= модель рынка =================
+        // не просто рандом +-3%: есть режимы (тренд/боковик), кластеры волатильности
+        // после новостей и гэпы на открытии. выглядит как живая акция второго эшелона
+        function makeBar(shock) {
+            // иногда рынок меняет режим: медвежий / нейтральный / бычий
+            if (Math.random() < 0.08) {
+                var r = Math.random();
+                drift = r < 0.33 ? -0.0015 : (r < 0.66 ? 0.0005 : 0.002);
+            }
+            // новость бьет по открытию (гэп) и разгоняет волатильность, потом она затухает
+            if (shock) vol += Math.abs(shock) * 0.4;
+            vol = Math.min(0.03, Math.max(0.007, 0.85 * vol + 0.15 * CFG.baseVol));
+
+            var o = lastPrice * (1 + shock + gauss() * vol * 0.2);   // гэп + шум на открытии
+            var c = Math.max(o * (1 + drift + gauss() * vol), 1);    // доходность за день
+            var h = Math.max(o, c) * (1 + Math.abs(gauss()) * vol * 0.4); // фитили
+            var l = Math.min(o, c) * (1 - Math.abs(gauss()) * vol * 0.4);
+            var ret = c / lastPrice - 1;
+            // объем коррелирует с движением: дернули цену - народу набежало
+            var v = Math.round(40000 * (1 + 12 * Math.abs(ret)) * (shock ? 2.2 : 1) * rand(0.7, 1.3));
+
+            var bar = { ts: nextTs, o: r2(o), h: r2(h), l: r2(l), c: r2(c), v: v };
+            prevClose = lastPrice;
+            lastPrice = bar.c;
+            nextTs = nextTradingTs(nextTs);
+            return bar;
+        }
+
+        // ================= журнал / новости =================
+        function log(msg, cls) {
+            var box = $("journalBox");
+            var d = document.createElement("div");
+            if (cls) d.className = cls;
+            d.textContent = fmtDate(bars[bars.length - 1].ts) + " · " + msg;
+            box.insertBefore(d, box.firstChild);
+            while (box.children.length > 80) box.removeChild(box.lastChild); // DOM не резиновый
+        }
+        function pushNews(ev, ts) {
+            var box = $("newsBox");
+            var d = document.createElement("div");
+            d.className = "news-item";
+            d.innerHTML = "<div class='meta'>" + fmtDate(ts) + " " + rndTime() + " · " + ev.s + "</div>" + ev.t;
+            box.insertBefore(d, box.firstChild);
+            while (box.children.length > 40) box.removeChild(box.lastChild);
+        }
+
+        // ================= исполнение сделок =================
+        function feeOf(amount) { return Math.max(1, r2(amount * CFG.fee)); } // минималка 1 рубль
+
+        function executeBuy(qty, fill, bar, reason) {
+            var amount = r2(qty * fill), fee = feeOf(amount);
+            if (amount + fee > cash) { log("Отказ: недостаточно средств с учетом комиссии", "bad"); return false; }
+            cash = r2(cash - amount - fee);
+            basis += amount + fee;      // комиссия сидит в себестоимости, как у брокера в отчете
+            shares += qty;
+            feesTotal = r2(feesTotal + fee);
+            buyTable.addData([[bar.ts, r2(bar.l * 0.99)]]); // треугольник под свечой
+            addTrade("ПОКУПКА", qty, fill, fee, null, reason, bar);
+            log("Покупка " + qty + " шт по " + money(fill) + " (" + reason + "), комиссия " + money(fee), "good");
+            return true;
+        }
+
+        function executeSell(qty, fill, bar, reason) {
+            if (qty > shares) return false;
+            var amount = r2(qty * fill), fee = feeOf(amount);
+            var avg = basis / shares;                 // средняя себестоимость одной штуки
+            var pnl = r2(amount - fee - avg * qty);   // реализованный финрез по этой продаже
+            cash = r2(cash + amount - fee);
+            basis -= avg * qty;
+            shares -= qty;
+            if (shares === 0) { basis = 0; sl = null; tp = null; } // позицию закрыли - стопы снимаются
+            realized = r2(realized + pnl);
+            feesTotal = r2(feesTotal + fee);
+            sellsN++; if (pnl > 0) winsN++;
+            sellTable.addData([[bar.ts, r2(bar.h * 1.01)]]);
+            addTrade("ПРОДАЖА", qty, fill, fee, pnl, reason, bar);
+            log("Продажа " + qty + " шт по " + money(fill) + " (" + reason + "), P&L " + money(pnl), pnl >= 0 ? "good" : "bad");
+            return true;
+        }
+
+        function addTrade(side, qty, price, fee, pnl, reason, bar) {
+            tradesN++;
+            var tb = $("tradesBody");
+            var tr = document.createElement("tr");
+            var pnlCell = pnl === null ? "—" : "<span class='" + (pnl >= 0 ? "good" : "bad") + "'>" + money(pnl) + "</span>";
+            tr.innerHTML = "<td>" + fmtDate(bar.ts) + " " + rndTime() + "</td>" +
+                "<td class='" + (side === "ПОКУПКА" ? "good" : "bad") + "'>" + side + "</td>" +
+                "<td>" + qty + "</td><td>" + money(price) + "</td><td>" + money(fee) + "</td>" +
+                "<td>" + pnlCell + "</td><td class='muted'>" + reason + "</td>";
+            tb.insertBefore(tr, tb.firstChild);
+            while (tb.children.length > 200) tb.removeChild(tb.lastChild);
+        }
+
+        // рыночная заявка: исполняем по последней цене + проскальзывание против нас
+        function marketOrder(side, qty) {
+            if (over) return;
+            qty = Math.floor(qty);
+            if (!qty || qty <= 0) { log("Некорректный объем заявки", "bad"); return; }
+            var bar = bars[bars.length - 1];
+            var slip = lastPrice * rand(0, SLIP_MAX);
+            if (side === "buy") executeBuy(qty, r2(lastPrice + slip), bar, "рыночная");
+            else {
+                if (qty > shares) { log("Отказ: нет столько бумаг в позиции (шорт недоступен)", "bad"); return; }
+                executeSell(qty, r2(lastPrice - slip), bar, "рыночная");
+            }
+            refreshUI();
+        }
+
+        function placeLimit(side, qty, price) {
+            if (over) return;
+            qty = Math.floor(qty);
+            if (!qty || qty <= 0 || !price || price <= 0) { log("Некорректные параметры лимитной заявки", "bad"); return; }
+            // лимитка на покупку должна стоять ниже рынка, на продажу выше, иначе это просто маркет
+            if (side === "buy" && price >= lastPrice) { log("Лимитная покупка должна быть ниже текущей цены", "bad"); return; }
+            if (side === "sell" && price <= lastPrice) { log("Лимитная продажа должна быть выше текущей цены", "bad"); return; }
+            if (side === "sell" && qty > shares) { log("Отказ: нет столько бумаг для продажи", "bad"); return; }
+            orders.push({ id: ++ordId, side: side, qty: qty, price: r2(price) });
+            log("Выставлена лимитная заявка №" + ordId + ": " + (side === "buy" ? "покупка" : "продажа") + " " + qty + " шт по " + money(price));
+            refreshUI();
+        }
+
+        function cancelOrder(id) {
+            for (var i = 0; i < orders.length; i++) {
+                if (orders[i].id === id) {
+                    orders.splice(i, 1);
+                    log("Заявка №" + id + " снята");
+                    refreshUI();
+                    return;
+                }
+            }
+        }
+
+        // проверка лимиток и стопов по диапазону нового бара
+        function processBar(bar) {
+            // копируем массив, потому что execute может дернуть refreshUI, а мы тут удаляем элементы
+            var list = orders.slice();
+            for (var i = 0; i < list.length; i++) {
+                var o = list[i];
+                if (o.side === "buy" && bar.l <= o.price) {
+                    // если открылись ниже лимита (гэп) - исполняем по открытию, это выгоднее
+                    var fill = Math.min(bar.o, o.price);
+                    orders.splice(orders.indexOf(o), 1);
+                    if (!executeBuy(o.qty, fill, bar, "лимитная №" + o.id)) {
+                        log("Заявка №" + o.id + " отменена: не хватило средств", "bad");
+                    }
+                } else if (o.side === "sell" && bar.h >= o.price) {
+                    var fillS = Math.max(bar.o, o.price);
+                    orders.splice(orders.indexOf(o), 1);
+                    if (!executeSell(o.qty, fillS, bar, "лимитная №" + o.id)) {
+                        log("Заявка №" + o.id + " отменена: бумаг в позиции меньше объема", "bad");
+                    }
+                }
+            }
+            // стопы проверяем после лимиток. если за день задели и стоп и тейк -
+            // считаем что сработал стоп (консервативно, внутри дня мы порядок не знаем)
+            if (shares > 0 && sl !== null && bar.l <= sl) {
+                executeSell(shares, Math.min(bar.o, sl), bar, "стоп-лосс");
+            } else if (shares > 0 && tp !== null && bar.h >= tp) {
+                executeSell(shares, Math.max(bar.o, tp), bar, "тейк-профит");
+            }
+        }
+
+        // ================= следующий бар (реплей) =================
+        function nextBar() {
+            if (over || day >= CFG.days) return;
+
+            var shock = 0;
+            if (Math.random() < CFG.newsP) {
+                var ev = newsList[Math.floor(Math.random() * newsList.length)];
+                shock = rand(ev.min, ev.max);
+                pushNews(ev, nextTs);
+            }
+            var bar = makeBar(shock);
+            bars.push(bar);
+            // инкрементальное добавление: график дорисовывается сам, без пересоздания
+            table.addData([[bar.ts, bar.o, bar.h, bar.l, bar.c]]);
+            volTable.addData([[bar.ts, bar.v]]);
+
+            processBar(bar);
+
+            // отмечаем капитал по цене закрытия (mark-to-market)
+            var eq = r2(cash + shares * bar.c);
+            eqTable.addData([[bar.ts, eq]]);
+            dailyRets.push(eq / prevEq - 1);
+            prevEq = eq;
+            if (eq > peakEq) peakEq = eq;
+            var dd = (peakEq - eq) / peakEq;
+            if (dd > maxDD) maxDD = dd;
+            // двигаем границы шкалы капитала только когда реально вылезли за них, лишние перерисовки не нужны
+            if (eq < eqLow) { eqLow = eq; chart.plot(2).yScale().minimum(Math.floor(eq * 0.97)); }
+            if (eq > eqHigh) { eqHigh = eq; chart.plot(2).yScale().maximum(Math.ceil(eq * 1.03)); }
+
+            day++;
+            applyView();
+            renderBook();
+            renderTickers();
+            refreshUI();
+
+            if (day >= CFG.days) finish();
+        }
+
+        // видимый диапазон: либо все, либо последние N баров
+        function applyView() {
+            var startIdx = (viewN > 0 && bars.length > viewN) ? bars.length - viewN : 0;
+            chart.selectRange(bars[startIdx].ts, bars[bars.length - 1].ts + DAY_MS * 2);
+        }
+
+        // ================= стакан =================
+        // фейковый, но живет по тем же правилам:围绕 последней цены, объемы рандомные
+        function renderBook() {
+            var step = Math.max(0.01, r2(lastPrice * 0.0006));
+            var asks = [], bids = [], maxSize = 1, i, size;
+            for (i = 1; i <= 7; i++) {
+                size = Math.round(rand(5, 300) * (1 + i * 0.25));
+                if (size > maxSize) maxSize = size;
+                asks.push({ p: r2(lastPrice + step * i), s: size });
+                size = Math.round(rand(5, 300) * (1 + i * 0.25));
+                if (size > maxSize) maxSize = size;
+                bids.push({ p: r2(lastPrice - step * i), s: size });
+            }
+            // строим одной строкой innerHTML - браузеру так сильно легче, чем 14 createElement
+            function rows(arr, color) {
+                var html = "";
+                for (var j = 0; j < arr.length; j++) {
+                    var w = Math.round(arr[j].s / maxSize * 100);
+                    html += "<div class='brow' data-p='" + arr[j].p + "' style='background:linear-gradient(to left, " + color + " " + w + "%, transparent " + w + "%)'>" +
+                        "<span class='" + (color.indexOf("38,166") >= 0 ? "good" : "bad") + "'>" + arr[j].p.toFixed(2) + "</span>" +
+                        "<span class='muted'>" + arr[j].s + "</span></div>";
+                }
+                return html;
+            }
+            $("bookAsks").innerHTML = rows(asks.slice().reverse(), "rgba(239,83,80,0.15)");
+            $("bookBids").innerHTML = rows(bids, "rgba(38,166,154,0.15)");
+            $("bookSpread").textContent = "спред " + r2(step * 2).toFixed(2) + " ₽ (" + (step * 2 / lastPrice * 100).toFixed(2) + "%)";
+        }
+
+        function renderTickers() {
+            var html = "";
+            for (var i = 0; i < tickers.length; i++) {
+                var t = tickers[i];
+                var ch = (t.p / t.p0 - 1) * 100;
+                t.p = t.p * (1 + gauss() * t.v);
+                html += "<span><b>" + t.n + "</b><span class='" + (ch >= 0 ? "good" : "bad") + "'>" +
+                    t.p.toFixed(t.p > 1000 ? 0 : 2) + " " + pct(ch) + "</span></span>";
+            }
+            $("strip").innerHTML = html;
+        }
+
+        // ================= обновление интерфейса =================
+        function refreshUI() {
+            var bar = bars[bars.length - 1];
+            var eq = r2(cash + shares * lastPrice);
+            var pnl = r2(eq - CFG.deposit);
+
+            $("symPrice").textContent = money(lastPrice);
+            var ch = (lastPrice - prevClose) / prevClose * 100;
+            var sc = $("symChange");
+            sc.textContent = pct(ch);
+            sc.className = "mono " + (ch >= 0 ? "good" : "bad");
+            $("sessO").textContent = bar.o.toFixed(2);
+            $("sessH").textContent = bar.h.toFixed(2);
+            $("sessL").textContent = bar.l.toFixed(2);
+            $("sessV").textContent = (bar.v / 1000).toFixed(1) + "K";
+
+            $("accEq").textContent = money(eq);
+            $("accCash").textContent = money(cash);
+            var ap = $("accPnl");
+            ap.textContent = money(pnl) + " (" + pct(pnl / CFG.deposit * 100) + ")";
+            ap.className = pnl >= 0 ? "good" : "bad";
+            $("dateView").textContent = new Date(bar.ts).toLocaleDateString("ru-RU", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+            $("dayView").textContent = "бар " + day + "/" + CFG.days;
+
+            // вкладка позиции
+            if (shares > 0) {
+                var avg = basis / shares;
+                var upnl = r2(shares * lastPrice - basis);
+                $("posBody").innerHTML =
+                    "<table><tr><th>Инструмент</th><th>Кол-во</th><th>Ср. цена</th><th>Тек. цена</th><th>Нереализ. P&L</th><th>Стоп</th><th>Тейк</th></tr>" +
+                    "<tr><td>RNDM</td><td>" + shares + "</td><td>" + money(r2(avg)) + "</td><td>" + money(lastPrice) + "</td>" +
+                    "<td class='" + (upnl >= 0 ? "good" : "bad") + "'>" + money(upnl) + " (" + pct(upnl / basis * 100) + ")</td>" +
+                    "<td>" + (sl !== null ? money(sl) : "—") + "</td><td>" + (tp !== null ? money(tp) : "—") + "</td></tr></table>";
+            } else {
+                $("posBody").innerHTML = "<span class='muted'>Нет открытой позиции. Реализованный результат: " + money(realized) + "</span>";
+            }
+
+            // вкладка заявок
+            var ob = $("ordersBody"), html = "";
+            for (var i = 0; i < orders.length; i++) {
+                var o = orders[i];
+                html += "<tr><td>" + o.id + "</td><td>лимитная</td><td class='" + (o.side === "buy" ? "good" : "bad") + "'>" +
+                    (o.side === "buy" ? "покупка" : "продажа") + "</td><td>" + o.qty + "</td><td>" + money(o.price) +
+                    "</td><td><button class='xbtn' data-id='" + o.id + "'>✕</button></td></tr>";
+            }
+            ob.innerHTML = html || "<tr><td colspan='6' class='muted'>Активных заявок нет</td></tr>";
+            $("ordCount").textContent = orders.length ? "(" + orders.length + ")" : "";
+
+            updatePreview();
+        }
+
+        function updatePreview() {
+            var qty = Math.floor(parseFloat($("ordQty").value)) || 0;
+            var isLimit = $("ordType").value === "limit";
+            var p = isLimit ? (parseFloat($("ordLimit").value) || 0) : lastPrice;
+            if (qty <= 0 || p <= 0) { $("ordPreview").textContent = ""; return; }
+            var amount = r2(qty * p);
+            $("ordPreview").textContent = "≈ " + money(amount) + " + комиссия " + money(feeOf(amount)) +
+                (isLimit ? "" : " ± проскальзывание");
+        }
+
+        // ================= реплей / автопрокрутка =================
+        function stopAuto() {
+            if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+            $("playBtn").textContent = "▶ Реплей";
+        }
+        function toggleAuto() {
+            if (over) return;
+            if (autoTimer) stopAuto();
+            else {
+                autoTimer = setInterval(nextBar, parseInt($("speedSel").value, 10));
+                $("playBtn").textContent = "⏸ Стоп";
+            }
+        }
+
+        // ================= конец сессии и отчет =================
+        function sharpe() {
+            // годовой Шарп: mean(дневные доходности) / std(дневные доходности) * sqrt(252)
+            // 252 - торговых дней в году. безрисковую ставку для простоты считаем нулевой
+            if (dailyRets.length < 2) return 0;
+            var sum = 0, i;
+            for (i = 0; i < dailyRets.length; i++) sum += dailyRets[i];
+            var mean = sum / dailyRets.length;
+            var sq = 0;
+            for (i = 0; i < dailyRets.length; i++) sq += (dailyRets[i] - mean) * (dailyRets[i] - mean);
+            var std = Math.sqrt(sq / (dailyRets.length - 1));
+            return std < 1e-9 ? 0 : mean / std * Math.sqrt(252);
+        }
+
+        function finish() {
+            over = true;
+            stopAuto();
+            // по окончании сессии позиция принудительно закрывается по цене закрытия
+            if (shares > 0) executeSell(shares, lastPrice, bars[bars.length - 1], "закрытие сессии");
+            refreshUI();
+
+            var ret = (cash - CFG.deposit) / CFG.deposit * 100;
+            var hold = (lastPrice - startPrice) / startPrice * 100;
+            var alpha = ret - hold;
+            var wr = sellsN > 0 ? (winsN / sellsN * 100) : 0;
+
+            var rows = [
+                ["Начальный депозит", money(CFG.deposit)],
+                ["Итоговый капитал", money(cash)],
+                ["Доходность", "<span class='" + (ret >= 0 ? "good" : "bad") + "'>" + pct(ret) + "</span>"],
+                ["Бенчмарк (buy & hold)", pct(hold)],
+                ["Альфа к бенчмарку", "<span class='" + (alpha >= 0 ? "good" : "bad") + "'>" + pct(alpha) + "</span>"],
+                ["Реализованный P&L", money(realized)],
+                ["Комиссии всего", money(feesTotal)],
+                ["Сделок / продаж", tradesN + " / " + sellsN],
+                ["Винрейт продаж", wr.toFixed(0) + "%"],
+                ["Макс. просадка", "<span class='bad'>-" + (maxDD * 100).toFixed(2) + "%</span>"],
+                ["Sharpe (годовой)", sharpe().toFixed(2)]
+            ];
+            var html = "";
+            for (var i = 0; i < rows.length; i++) html += "<tr><td class='muted'>" + rows[i][0] + "</td><td>" + rows[i][1] + "</td></tr>";
+            $("reportBody").innerHTML = html;
+
+            // статистика тренажера между сессиями, лежит в localStorage
+            var meta = "";
+            try {
+                var st = JSON.parse(localStorage.getItem("rndmTermStats") || '{"n":0,"best":null}');
+                st.n++;
+                if (st.best === null || ret > st.best) st.best = ret;
+                localStorage.setItem("rndmTermStats", JSON.stringify(st));
+                meta = "Сессия №" + st.n + " · лучший результат: " + pct(st.best);
+            } catch (e) { /* localStorage может быть закрыт политикой браузера, не страшно */ }
+            $("reportMeta").textContent = meta;
+            $("reportModal").hidden = false;
+
+            ["buyBtn", "sellBtn", "maxQtyBtn", "closePosBtn", "nextBtn", "playBtn", "applySlTp"].forEach(function (id) { $(id).disabled = true; });
+            log("Сессия завершена. Итоговый капитал: " + money(cash));
+        }
+
+        // ================= инициализация графика =================
+        function buildChart() {
+            chart = anychart.stock();
+            chart.background().fill("#131722");
+            chart.padding(8, 8, 4, 4);
+            chart.scroller(false); // скроллер не нужен, диапазон рулится чипами в тулбаре
+            chart.tooltip().background().fill("#1e222d");
+            chart.tooltip().fontColor("#d1d4dc");
+            chart.tooltip().stroke("#2a2e39");
+
+            // три этажа: свечи, объем, кривая капитала
+            var p0 = chart.plot(0), p1 = chart.plot(1), p2 = chart.plot(2);
+            p0.height("56%"); p1.height("15%"); p2.height("21%");
+            [p0, p1, p2].forEach(function (p) {
+                p.background().fill("#131722");
+                p.yGrid().stroke("#1c2030");
+                p.xGrid().stroke("#1c2030");
+                p.yAxis().stroke("#2a2e39");
+                p.yAxis().labels().fontColor("#787b86");
+                p.yAxis().orientation("right"); // шкала справа, как в терминалах
+            });
+            p0.xAxis(false); p1.xAxis(false); // даты показываем только на нижнем этаже
+            p2.xAxis().stroke("#2a2e39");
+            p2.xAxis().labels().fontColor("#787b86");
+
+            table = anychart.data.table(0);
+            var rows = [];
+            for (var i = 0; i < bars.length; i++) rows.push([bars[i].ts, bars[i].o, bars[i].h, bars[i].l, bars[i].c]);
+            table.addData(rows);
+            // поле value дублирует close - его ест индикатор SMA
+            var mapping = table.mapAs({ 'open': 1, 'high': 2, 'low': 3, 'close': 4, 'value': 4 });
+
+            var candles = p0.candlestick(mapping);
+            candles.name("RNDM");
+            candles.risingFill("#26a69a"); candles.risingStroke("#26a69a");
+            candles.fallingFill("#ef5350"); candles.fallingStroke("#ef5350");
+
+            smaInd = p0.sma(mapping, 20, "line");
+            smaInd.series().stroke("1.5 #f0b90b");
+            smaInd.series().enabled($("smaChk").checked);
+
+            buyTable = anychart.data.table(0);
+            var bm = p0.marker(buyTable.mapAs({ 'value': 1 }));
+            bm.name("Покупка"); bm.type("triangle-up"); bm.size(6); bm.fill("#26a69a"); bm.stroke(null);
+            sellTable = anychart.data.table(0);
+            var sm = p0.marker(sellTable.mapAs({ 'value': 1 }));
+            sm.name("Продажа"); sm.type("triangle-down"); sm.size(6); sm.fill("#ef5350"); sm.stroke(null);
+
+            volTable = anychart.data.table(0);
+            var vrows = [];
+            for (i = 0; i < bars.length; i++) vrows.push([bars[i].ts, bars[i].v]);
+            volTable.addData(vrows);
+            var vs = p1.column(volTable.mapAs({ 'value': 1 }));
+            vs.name("Объем"); vs.fill("#4c525e 0.9"); vs.stroke(null);
+            p1.yAxis().labels().format(function () {
+                var v = this.value;
+                return v >= 1000000 ? (v / 1000000).toFixed(1) + "M" : (v / 1000).toFixed(0) + "K";
+            });
+
+            eqTable = anychart.data.table(0);
+            eqTable.addData([[bars[bars.length - 1].ts, CFG.deposit]]);
+            var es = p2.line(eqTable.mapAs({ 'value': 1 }));
+            es.name("Капитал"); es.stroke("1.5 #2962ff");
+            p2.yAxis().labels().format(function () { return (this.value / 1000).toFixed(0) + "K"; });
+            p2.yScale().minimum(Math.floor(CFG.deposit * 0.97));
+            p2.yScale().maximum(Math.ceil(CFG.deposit * 1.03));
+
+            chart.container("container");
+            chart.draw();
+            applyView();
+        }
+
+        function init() {
+            cash = CFG.deposit; shares = 0; basis = 0;
+            sl = null; tp = null;
+            orders = []; ordId = 0;
+            tradesN = 0; sellsN = 0; winsN = 0; feesTotal = 0; realized = 0;
+            day = 0; over = false;
+            bars = [];
+            vol = CFG.baseVol; drift = 0.0005;
+            lastPrice = rand(180, 350);
+            prevClose = lastPrice;
+            eqLow = eqHigh = peakEq = prevEq = CFG.deposit;
+            maxDD = 0; dailyRets = [];
+            nextTs = new Date(2026, 0, 5).getTime();
+
+            // предыстория без новостных шоков, просто рынок дышит
+            for (var i = 0; i < CFG.history; i++) bars.push(makeBar(0));
+            startPrice = lastPrice; // отсюда считаем бенчмарк "купил и держал"
+            for (i = 0; i < tickers.length; i++) tickers[i].p0 = tickers[i].p;
+
+            buildChart();
+            renderBook();
+            renderTickers();
+            refreshUI();
+
+            ["buyBtn", "sellBtn", "maxQtyBtn", "closePosBtn", "nextBtn", "playBtn", "applySlTp"].forEach(function (id) { $(id).disabled = false; });
+            log("Сессия открыта. Депозит " + money(CFG.deposit) + ", комиссия " + (CFG.fee * 100).toFixed(2) + "%, горизонт " + CFG.days + " торговых дней.");
+        }
+
+        function restart() {
+            stopAuto();
+            if (chart) { chart.dispose(); chart = null; } // убираем старый график целиком, память не течет
+            $("container").innerHTML = "";
+            $("journalBox").innerHTML = "";
+            $("newsBox").innerHTML = "";
+            $("tradesBody").innerHTML = "";
+            $("reportModal").hidden = true;
+            $("setModal").hidden = true;
+            init();
+        }
+
+        // ================= обработчики (вешаются один раз) =================
+        function sendOrder(side) {
+            var qty = parseFloat($("ordQty").value);
+            if ($("ordType").value === "limit") placeLimit(side, qty, parseFloat($("ordLimit").value));
+            else marketOrder(side, qty);
+        }
+        $("buyBtn").onclick = function () { sendOrder("buy"); };
+        $("sellBtn").onclick = function () { sendOrder("sell"); };
+        $("maxQtyBtn").onclick = function () {
+            // макс объем с запасом на комиссию и худшее проскальзывание
+            $("ordQty").value = Math.floor(cash / (lastPrice * (1 + CFG.fee + SLIP_MAX)));
+            updatePreview();
+        };
+        $("closePosBtn").onclick = function () { if (shares > 0) marketOrder("sell", shares); };
+        $("ordType").onchange = function () {
+            $("ordLimit").disabled = this.value !== "limit";
+            updatePreview();
+        };
+        $("ordQty").oninput = updatePreview;
+        $("ordLimit").oninput = updatePreview;
+
+        $("nextBtn").onclick = nextBar;
+        $("playBtn").onclick = toggleAuto;
+        $("speedSel").onchange = function () {
+            if (autoTimer) { stopAuto(); toggleAuto(); } // пересоздаем таймер с новой скоростью
+        };
+        $("newBtn").onclick = restart;
+        $("againBtn").onclick = restart;
+        $("closeReportBtn").onclick = function () { $("reportModal").hidden = true; };
+
+        // чипы диапазона
+        var chips = document.querySelectorAll("#toolbar .chip[data-n]");
+        chips.forEach(function (c) {
+            c.onclick = function () {
+                chips.forEach(function (x) { x.classList.remove("on"); });
+                c.classList.add("on");
+                viewN = parseInt(c.dataset.n, 10);
+                applyView();
+            };
+        });
+        $("smaChk").onchange = function () { if (smaInd) smaInd.series().enabled(this.checked); };
+
+        // вкладки нижней панели
+        var tabs = document.querySelectorAll(".tab");
+        tabs.forEach(function (t) {
+            t.onclick = function () {
+                tabs.forEach(function (x) { x.classList.remove("on"); });
+                document.querySelectorAll(".pane").forEach(function (p) { p.classList.remove("on"); });
+                t.classList.add("on");
+                $("pane-" + t.dataset.t).classList.add("on");
+            };
+        });
+
+        // отмена заявки - делегирование, кнопка живет внутри перерисовываемой таблицы
+        $("ordersBody").onclick = function (e) {
+            var id = e.target.dataset && e.target.dataset.id;
+            if (id) cancelOrder(parseInt(id, 10));
+        };
+
+        // клик по стакану -> подставляем цену в лимитку
+        $("bookBox").onclick = function (e) {
+            var row = e.target.closest(".brow");
+            if (!row) return;
+            $("ordType").value = "limit";
+            $("ordLimit").disabled = false;
+            $("ordLimit").value = row.dataset.p;
+            updatePreview();
+        };
+
+        // стоп-лосс / тейк-профит
+        $("applySlTp").onclick = function () {
+            if (over || shares === 0) { log("Стопы ставятся только на открытую позицию", "bad"); return; }
+            var s = parseFloat($("slInput").value), t = parseFloat($("tpInput").value);
+            if ($("slInput").value && (!s || s >= lastPrice)) { log("Стоп-лосс должен быть ниже текущей цены", "bad"); return; }
+            if ($("tpInput").value && (!t || t <= lastPrice)) { log("Тейк-профит должен быть выше текущей цены", "bad"); return; }
+            sl = $("slInput").value ? r2(s) : null;
+            tp = $("tpInput").value ? r2(t) : null;
+            log("Защитные приказы обновлены: SL " + (sl !== null ? money(sl) : "—") + ", TP " + (tp !== null ? money(tp) : "—"));
+            refreshUI();
+        };
+        $("clearSlTp").onclick = function () {
+            sl = null; tp = null;
+            $("slInput").value = ""; $("tpInput").value = "";
+            refreshUI();
+        };
+
+        // настройки симуляции
+        $("settingsBtn").onclick = function () { $("setModal").hidden = false; };
+        $("closeSet").onclick = function () { $("setModal").hidden = true; };
+        $("applySet").onclick = function () {
+            // зажимаем значения в разумные рамки, чтоб симуляция не сломалась
+            CFG.deposit = Math.max(1000, parseFloat($("setDeposit").value) || 100000);
+            CFG.days = Math.min(400, Math.max(30, Math.floor(parseFloat($("setDays").value)) || 120));
+            CFG.fee = Math.min(0.01, Math.max(0, (parseFloat($("setFee").value) || 0) / 100));
+            CFG.baseVol = Math.min(0.04, Math.max(0.005, (parseFloat($("setVol").value) || 1.2) / 100));
+            CFG.newsP = Math.min(0.5, Math.max(0, (parseFloat($("setNews").value) || 15) / 100));
+            restart();
+        };
+
+        // горячие клавиши: пробел - бар, B/S - рыночные заявки
+        document.addEventListener("keydown", function (e) {
+            if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+            if (!$("reportModal").hidden || !$("setModal").hidden) return;
+            if (e.code === "Space") { e.preventDefault(); nextBar(); }
+            if (e.code === "KeyB") sendOrder("buy");
+            if (e.code === "KeyS") sendOrder("sell");
+        });
+
+        anychart.onDocumentReady(init);
+    </script>
+</body>
+</html>
